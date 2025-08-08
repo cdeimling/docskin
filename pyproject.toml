@@ -108,10 +108,10 @@ branch = true
 data_file = ".coverage"
 concurrency = ["multiprocessing", "thread"]
 disable_warnings = ["couldnt-parse", "no-data-collected"]
-include = ["src/caipi/core/**/*.py"]
+include = ["docskin/**/*.py"]
 
 [project.scripts]
-md2pdf = "docskin.cli:main"
+docskin = "docskin.cli:main"
 
 ### bandit config
 [tool.bandit]
