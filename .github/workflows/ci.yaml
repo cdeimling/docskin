@@ -26,13 +26,13 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         
-    - name: Setup uv with caching
-      uses: astral-sh/uv-action@v1
+    - name: Enable caching
+      uses: astral-sh/setup-uv@v6
       with:
-        cache: true
+        enable-cache: true
           
     - name: Sync dependencies
-      run: uv sync --frozen
+      run: uv sync --locked
 
     - name: Lint with Ruff
       run: uv run ruff check .
