@@ -1,0 +1,151 @@
+[project]
+name = "docskin"
+version = "0.1.0"
+description = "Convert Markdown files to PDF with GitHub-like styling using WeasyPrint"
+authors = [
+    { name = "Constantin v. Deimling", email = "c.deimling@web.de" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "weasyprint>=62.3",
+    "markdown>=3.6",
+    "pygments>=2.18.0",
+    "requests>=2.32.3",
+    "click>=8.1.8",
+    "playwright>=1.54.0",
+]
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+norecursedirs = [".git", "tmp*", ".venv"]
+addopts = [
+    "-s", # show output of print statements
+    "-v", # more output
+    "-x", # stop execution after first failure
+    "--durations=0", # show duration of all tests
+]
+filterwarnings = [
+    'ignore::DeprecationWarning:past.*:',
+]
+
+[tool.ruff]
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+lint.select = [
+    "ALL"
+    ]
+# Never enforce `E501` (line length violations).
+lint.ignore = [
+    "COM812",
+    "S602",
+    "S603",
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["ALL"]
+lint.unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "__init__.py",
+]
+
+# Same as Black.
+line-length = 120
+
+# Assume Python 3.10. or higher
+target-version = "py39"
+
+# A list of mappings from file pattern to rule codes or prefixes to exclude, when considering any matching files.
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "D107"]
+"**/tests/*" = [
+    "S101",
+    "SLF001",
+    "T201",
+]
+
+# pep257-style docstrings
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 10.
+max-complexity = 10
+
+###### configuration of coverage
+[tool.coverage.run]
+branch = true
+data_file = ".coverage"
+concurrency = ["multiprocessing", "thread"]
+disable_warnings = ["couldnt-parse", "no-data-collected"]
+include = ["src/caipi/core/**/*.py"]
+
+[project.scripts]
+md2pdf = "docskin.cli:main"
+
+### bandit config
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
+skips = ["B603", "B404", "B602"]
+format = "html"
+output = "bandit.html"
+
+[dependency-groups]
+dev = [
+    "uv>=0.5.6",
+]
+check = [
+    "bandit>=1.7.10",
+    "mypy[reports]>=1.13.0",
+    "mypy-extensions>=1.0.0",
+    "ruff>=0.8.2",
+    "types-requests>=2.32.0.20241016",
+    "pre-commit>=3.5.0",
+]
+test = [
+    "pytest>=8.3.4",
+    "pytest-cov>=5.0.0",
+    "pytest-xdist>=3.6.1",
+]
+deploy = [
+    "pip-licenses-cli>=1.1.0",
+    "pyinstaller>=6.13.0",
+]
+
+[tool.uv]
+default-groups = ["dev", "check", "test", "deploy"]
+python-downloads = "manual"
+package = true
+
+[tool.setuptools]
+packages = ["docskin"]
