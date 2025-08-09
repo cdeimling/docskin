@@ -80,6 +80,9 @@ def md(input: Path, output: Path, logo: Path, css_style: Path) -> None:
     style_renderer = CustomCSSStyle(title, content, labels, css_path=Path(css_style))
     html = style_renderer.render_html()
 
+    if output.is_file():
+        output.unlink()
+
     click.echo("🖨️  Rendering PDF...")
     HTML(string=html).write_pdf(output)
     click.echo(f"✅ Saved as {output}")
