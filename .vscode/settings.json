@@ -4,7 +4,8 @@
         "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.codeActionsOnSave": {
             "source.organizeImports": "always"
-        }
+        },
+        "editor.rulers": [100]
     },
     "cSpell.words": [
         "docskin"
@@ -31,6 +32,8 @@
         "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
     },
     "ruff.configuration": "pyproject.toml",
+    "black.config": "${workspaceFolder}/pyproject.toml",
+    "flake8.configuration": "${workspaceFolder}/pyproject.toml",
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.terminal.activateEnvironment": true,
     "python.analysis.typeCheckingMode": "basic",

@@ -3,28 +3,46 @@ from pathlib import Path
 
 
 class BaseStyle(ABC):
-    def __init__(self, title: str, content: str, labels: list[str]):
+    """Abstract base class for PDF styling."""
+
+    def __init__(self, title: str, content: str, labels: list[str]) -> None:
+        """Initialize the base style."""
         self.title = title
         self.content = content
         self.labels = labels
 
     @abstractmethod
     def render_html(self) -> str:
+        """Render the HTML for the styled PDF."""
         pass
 
 
 class GitHubStyle(BaseStyle):
-    def __init__(self, title, content, labels, dark=False):
+    """GitHub-like PDF style with dark/light mode."""
+
+    def __init__(
+        self,
+        title: str,
+        content: str,
+        labels: list[str],
+        dark: bool = False,  # noqa: FBT001
+    ) -> None:
+        """Initialize GitHubStyle."""
         super().__init__(title, content, labels)
         self.dark = dark
 
     def render_html(self) -> str:
-        css_file = "markdown-dark.css" if self.dark else "markdown-light.css"
-        try:
-            with open(css_file) as f:
-                github_css = f.read()
-        except FileNotFoundError:
-            github_css = "/* CSS file not found */"
+        """Render the HTML for the GitHub-styled PDF."""
+        css_file = (
+            Path("markdown-dark.css")
+            if self.dark
+            else Path("markdown-light.css")
+        )
+        if not css_file.is_file():
+            exception_msg = f"CSS file not found: {css_file}"
+            raise FileNotFoundError(exception_msg)
+
+        github_css = css_file.read_text(encoding="utf-8")
 
         background = "#0d1117" if self.dark else "#ffffff"
         foreground = "#c9d1d9" if self.dark else "#24292f"
@@ -47,7 +65,7 @@ class GitHubStyle(BaseStyle):
             </head>
             <body class="markdown-body">
                 <h1>{self.title}</h1>
-                <p><strong>Labels:</strong> {', '.join(self.labels)}</p>
+                <p><strong>Labels:</strong> {", ".join(self.labels)}</p>
                 <hr>
                 {self.content}
             </body>
@@ -56,17 +74,23 @@ class GitHubStyle(BaseStyle):
 
 
 class CustomCSSStyle(BaseStyle):
-    def __init__(self, title:str, content:str, labels:list[str], css_path: Path):
+    """Custom PDF style using a user-provided CSS file."""
+
+    def __init__(
+        self, title: str, content: str, labels: list[str], css_path: Path
+    ) -> None:
+        """Initialize CustomCSSStyle."""
         super().__init__(title, content, labels)
         self.css_path = css_path
         self.margin = "1cm"
 
     def render_html(self) -> str:
-        try:
-            with open(self.css_path) as f:
-                custom_css = f.read()
-        except FileNotFoundError:
-            custom_css = "/* custom CSS file not found */"
+        """Render the HTML for the custom CSS-styled PDF."""
+        if not self.css_path.is_file():
+            exception_msg = f"CSS file not found: {self.css_path}"
+            raise FileNotFoundError(exception_msg)
+
+        custom_css = self.css_path.read_text(encoding="utf-8")
 
         return f"""
         <html>
@@ -81,7 +105,7 @@ class CustomCSSStyle(BaseStyle):
             </head>
             <body>
                 <h1>{self.title}</h1>
-                <p><strong>Labels:</strong> {', '.join(self.labels)}</p>
+                <p><strong>Labels:</strong> {", ".join(self.labels)}</p>
                 <hr>
                 {self.content}
             </body>

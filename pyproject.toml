@@ -79,8 +79,14 @@ exclude = [
     "__init__.py",
 ]
 
-# Same as Black.
-line-length = 120
+line-length = 80
+
+[tool.black]
+line-length = 80
+
+[tool.flake8]
+line-length = 80
+max-line-length = 80
 
 # Assume Python 3.10. or higher
 target-version = "py39"
