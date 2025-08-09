@@ -1,0 +1,48 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Enable caching
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+          
+    - name: Sync dependencies
+      run: uv sync --locked
+
+    - name: Test CLI
+      run: uv run pytest tests
+
+    - name: Lint with Ruff
+      id: ruff
+      run: |
+        uv run ruff check . > ruff_output.txt || true
+        echo "Ruff findings summary:" > $GITHUB_STEP_SUMMARY
+        head -n 50 ruff_output.txt >> $GITHUB_STEP_SUMMARY
+
+    - name: Format check with Black
+      run: uv run ruff format --check docskin
