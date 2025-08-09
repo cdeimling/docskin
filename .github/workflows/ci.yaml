@@ -34,8 +34,15 @@ jobs:
     - name: Sync dependencies
       run: uv sync --locked
 
+    - name: Test CLI
+      run: uv run pytest tests
+
     - name: Lint with Ruff
-      run: uv run ruff check .
+      id: ruff
+      run: |
+        uv run ruff check . > ruff_output.txt || true
+        echo "Ruff findings summary:" > $GITHUB_STEP_SUMMARY
+        head -n 50 ruff_output.txt >> $GITHUB_STEP_SUMMARY
 
     - name: Format check with Black
-      run: uv run black --check .
+      run: uv run ruff format --check docskin

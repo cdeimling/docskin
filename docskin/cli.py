@@ -146,25 +146,25 @@ def md(
 )
 @common_options
 def md_dir(
-    md_input_dir: Path,
+    input: Path,
     logo: Path,  # noqa: ARG001
     css_style: Path,
     output: Path,
 ) -> None:
     """Convert all Markdown files in a directory to PDF."""
-    click.echo(f"📁 Scanning {md_input_dir} for Markdown files...")
+    click.echo(f"📁 Scanning {input} for Markdown files...")
     output = Path(output)
-    md_input_dir = Path(md_input_dir)
+    input = Path(input)
 
     output.mkdir(parents=True, exist_ok=True)
 
-    md_files = list(md_input_dir.rglob("*.md"))
+    md_files = list(input.rglob("*.md"))
     if not md_files:
         click.echo("⚠️  No Markdown files found.")
         return
 
     for path in md_files:
-        rel_path = path.relative_to(md_input_dir)
+        rel_path = path.relative_to(input)
         output_path = output / rel_path.with_suffix(".pdf")
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
