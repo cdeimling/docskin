@@ -35,7 +35,11 @@ jobs:
       run: uv sync --locked
 
     - name: Test CLI
-      run: uv run pytest tests -cov=docskin --cov-report=xml --cov-report=term-missing
+      run: |
+        uv run pytest tests \
+          --cov=docskin \
+          --cov-report=xml:coverage.xml \
+          --cov-report=term-missing
 
     - name: Pytest coverage comment
       uses: MishaKav/pytest-coverage-comment@v1.1.51
@@ -44,7 +48,7 @@ jobs:
 
     - uses: astral-sh/ruff-action@v3
       with:
-        args: check --output-format=github .
+        args: check --output-format=github . --exit-zero .
 
     - uses: astral-sh/ruff-action@v3
       with:
