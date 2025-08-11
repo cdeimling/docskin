@@ -35,14 +35,19 @@ jobs:
       run: uv sync --locked
 
     - name: Test CLI
-      run: uv run pytest tests
+      run: uv run pytest tests -cov=docskin --cov-report=xml --cov-report=term-missing
 
-    - name: Lint with Ruff
-      id: ruff
-      run: |
-        uv run ruff check . > ruff_output.txt || true
-        echo "Ruff findings summary:" > $GITHUB_STEP_SUMMARY
-        head -n 50 ruff_output.txt >> $GITHUB_STEP_SUMMARY
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./coverage.xml
+        fail_ci_if_error: false
+        verbose: true
 
-    - name: Format check with Black
-      run: uv run ruff format --check docskin
+    - uses: astral-sh/ruff-action@v1
+      with:
+        args: check --output-format=github .
+
+    - uses: astral-sh/ruff-action@v1
+      with:
+        args: format --check docskin
