@@ -11,11 +11,9 @@ from pathlib import Path
 from typing import Any, Callable
 
 import click
-import markdown
-from weasyprint import HTML
 
-from docskin.github_api import GitHubIssueFetcher
-from docskin.styles import PDFStyle
+from docskin.converter import GitHubIssueToPDFService, MarkdownToPDFConverter
+from docskin.styles import StyleManager
 
 
 @click.group()
@@ -29,12 +27,12 @@ def common_options(func: Callable[..., Any]) -> Callable[..., Any]:
 
     @click.option(
         "--logo",
-        type=click.Path(exists=True),
+        type=click.Path(exists=True, path_type=Path),
         help="Optional path to logo image",
     )
     @click.option(
         "--css-style",
-        type=click.Path(exists=True),
+        type=click.Path(exists=True, path_type=Path),
         help="Optional path to CSS style file",
         default="assets/markdown-dark.css",
     )
@@ -68,22 +66,9 @@ def github(
         f"🐙 Fetching issue #{issue} from {repo} with style '{css_style}'"
     )
 
-    fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)
-    issue_data = fetcher.fetch()
-
-    title = issue_data["title"]
-    labels = [label["name"] for label in issue_data.get("labels", [])]
-    content = markdown.markdown(
-        issue_data["body"], extensions=["fenced_code", "codehilite"]
-    )
-
-    click.echo(f"📄 Rendering issue #{issue} to PDF...")
-
-    style_renderer = PDFStyle(title, content, labels, css_path=Path(css_style))
-    html = style_renderer.render_html()
-
-    click.echo("🖨️  Rendering PDF...")
-    HTML(string=html).write_pdf(output)
+    style_manager = StyleManager(css_style)
+    service = GitHubIssueToPDFService(style_manager)
+    service.convert(repo, issue, api_base, output)
     click.echo(f"✅ Saved as {output}")
 
 
@@ -92,7 +77,7 @@ def github(
     "--output",
     "output_pdf",
     required=True,
-    type=click.Path(file_okay=True),
+    type=click.Path(file_okay=True, path_type=Path),
     help="Output directory for PDFs",
 )
 @click.option(
@@ -110,22 +95,10 @@ def md(
     css_style: Path,
 ) -> None:
     """Convert a local Markdown file to PDF with optional theming."""
-    click.echo(f"📄 Converting {input_md} to PDF using style '{css_style}'")
-
-    with input_md.open("r", encoding="utf-8") as f:
-        md_content = f.read()
-
-    title = input_md.stem
-    labels: list[str] = []
-    content = markdown.markdown(
-        md_content, extensions=["fenced_code", "codehilite"]
-    )
-
-    style_renderer = PDFStyle(title, content, labels, css_path=Path(css_style))
-    html = style_renderer.render_html()
-
-    click.echo("🖨️  Rendering PDF...")
-    HTML(string=html).write_pdf(output_pdf)
+    click.echo(f"📄 Rendering {input_md} to PDF...")
+    style_manager = StyleManager(css_path=css_style)
+    converter = MarkdownToPDFConverter(style_manager)
+    converter.convert_file(input_md, output_pdf)
     click.echo(f"✅ Saved as {output_pdf}")
 
 
@@ -134,14 +107,16 @@ def md(
     "--output",
     "output_md_folder",
     required=True,
-    type=click.Path(file_okay=False, dir_okay=True),
+    type=click.Path(file_okay=False, dir_okay=True, path_type=Path),
     help="Output directory for PDFs",
 )
 @click.option(
     "--input",
     "input_md_folder",
     required=True,
-    type=click.Path(file_okay=False, exists=True, dir_okay=True),
+    type=click.Path(
+        file_okay=False, exists=True, dir_okay=True, path_type=Path
+    ),
     help="Directory containing Markdown files",
 )
 @common_options
@@ -153,36 +128,7 @@ def md_dir(
 ) -> None:
     """Convert all Markdown files in a directory to PDF."""
     click.echo(f"📁 Scanning {input_md_folder} for Markdown files...")
-    output_md_folder = Path(output_md_folder)
-    input_md_folder = Path(input_md_folder)
-
-    output_md_folder.mkdir(parents=True, exist_ok=True)
-
-    md_files = list(input_md_folder.rglob("*.md"))
-    if not md_files:
-        click.echo("⚠️  No Markdown files found.")
-        return
-
-    for path in md_files:
-        rel_path = path.relative_to(input_md_folder)
-        output_path = output_md_folder / rel_path.with_suffix(".pdf")
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-
-        click.echo(f"📄 Rendering {rel_path} -> {output_path}")
-
-        with path.open("r", encoding="utf-8") as f:
-            md_content = f.read()
-
-        title = path.stem
-        labels: list[str] = []
-        content = markdown.markdown(
-            md_content, extensions=["fenced_code", "codehilite"]
-        )
-
-        style_renderer = PDFStyle(
-            title, content, labels, css_path=Path(css_style)
-        )
-        html = style_renderer.render_html()
-        HTML(string=html).write_pdf(output_path)
-
+    style_manager = StyleManager(css_path=css_style)
+    converter = MarkdownToPDFConverter(style_manager)
+    converter.convert_folder(input_md_folder, output_md_folder)
     click.echo(f"✅ All Markdown files converted to PDF in {output_md_folder}")

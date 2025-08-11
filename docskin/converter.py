@@ -5,50 +5,87 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    import pathlib
     from collections.abc import Generator
+    from pathlib import Path
 
-    from .styles import BaseStyle
+    from .styles import StyleManager
 
 import markdown
 from weasyprint import HTML
+
+from .github_api import GitHubIssueFetcher
+
+
+class MarkdownHTMLExtractor:
+    """Converts Markdown text to HTML."""
+
+    def __init__(self, extensions: list[str] | None = None) -> None:
+        """Initialize with optional Markdown extensions."""
+        self.extensions = extensions or ["fenced_code", "tables", "codehilite"]
+
+    def extract(self, md_text: str) -> str:
+        """Convert Markdown text to HTML."""
+        return markdown.markdown(
+            md_text,
+            extensions=self.extensions,
+            output_format="xhtml",
+        )
 
 
 class MarkdownToPDFConverter:
     """Converts Markdown files into GitHub-styled PDFs."""
 
-    def __init__(self, style_manager: BaseStyle | None = None) -> None:
+    def __init__(self, style_manager: StyleManager) -> None:
         """Initialize the converter with a style manager."""
         self.style = style_manager
+        self.extractor = MarkdownHTMLExtractor()
 
-    def convert_file(
-        self, md_path: pathlib.Path, output_path: pathlib.Path
-    ) -> None:
+    def convert_file(self, input_md_path: Path, output_pdf_path: Path) -> None:
         """Convert a single Markdown file to a PDF."""
-        md_content = md_path.read_text(encoding="utf-8")
-        html_content = self._markdown_to_html(md_content)
-        HTML(string=html_content).write_pdf(output_path)
+        content = input_md_path.read_text(encoding="utf-8")
+        title = input_md_path.stem
+        html_content = self.markdown_to_html(content, title)
+        output_pdf_path.unlink(missing_ok=True)
+        HTML(string=html_content).write_pdf(output_pdf_path)
 
     def convert_folder(
-        self, folder_path: pathlib.Path
-    ) -> Generator[tuple[str, str], pathlib.Path, None]:
+        self, input_md_folder: Path, output_md_folder: Path
+    ) -> Generator[tuple[str, str], Path, None]:
         """Convert all Markdown files in a folder to PDF."""
-        for md_file in folder_path.glob("*.md"):
-            output_path = md_file.with_suffix(".pdf")
+        for md_file in input_md_folder.glob("*.md"):
+            output_path = output_md_folder / md_file.with_suffix(".pdf").name
             self.convert_file(md_file, output_path)
             yield md_file.name, output_path.name
 
-    def _markdown_to_html(self, md_text: str) -> str:
-        body = markdown.markdown(
-            md_text, extensions=["fenced_code", "tables", "codehilite"]
-        )
-        full_style = self.style.build_full_style()
-        return f"""
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <style>{full_style}</style>
-        </head>
-            <body class="markdown-body">{body}</body>
-        </html>
+    def markdown_to_html(
+        self,
+        content: str,
+        title: str | None = None,
+        labels: list[str] | None = None,
+    ) -> str:
+        """Convert Markdown text to HTML and apply styles.
+
+        Returns.
+        -------
+        str
+            The styled HTML content.
         """
+        markdown_content = self.extractor.extract(content)
+        return self.style.render_html(markdown_content, title, labels)
+
+
+class GitHubIssueToPDFService:
+    def __init__(self, style_manager: StyleManager):
+        self.style_manager = style_manager
+        self.extractor = MarkdownHTMLExtractor()
+
+    def convert(
+        self, repo: str, issue: int, api_base: str, output: Path
+    ) -> None:
+        fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)
+        issue_data = fetcher.fetch()
+        title = issue_data["title"]
+        labels = [label["name"] for label in issue_data.get("labels", [])]
+        content = self.extractor.extract(issue_data["body"])
+        html = self.style_manager.render_html(content, title, labels)
+        HTML(string=html).write_pdf(output)

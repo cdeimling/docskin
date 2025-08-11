@@ -21,9 +21,9 @@ class GitHubIssueFetcher:
         self,
         repo: str,
         issue_number: int,
-        api_base: str = "https://github.com",
+        api_base: str = "https://api.github.com",
     ) -> None:
-        """Initialize the GitHubIssueFetcher."""
+        """Initialise the GitHubIssueFetcher."""
         self.repo = repo
         self.issue_number = issue_number
         self.api_base = api_base.rstrip("/")
