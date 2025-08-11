@@ -15,7 +15,7 @@ import markdown
 from weasyprint import HTML
 
 from docskin.github_api import GitHubIssueFetcher
-from docskin.styles import CustomCSSStyle
+from docskin.styles import PDFStyle
 
 
 @click.group()
@@ -79,9 +79,7 @@ def github(
 
     click.echo(f"📄 Rendering issue #{issue} to PDF...")
 
-    style_renderer = CustomCSSStyle(
-        title, content, labels, css_path=Path(css_style)
-    )
+    style_renderer = PDFStyle(title, content, labels, css_path=Path(css_style))
     html = style_renderer.render_html()
 
     click.echo("🖨️  Rendering PDF...")
@@ -123,9 +121,7 @@ def md(
         md_content, extensions=["fenced_code", "codehilite"]
     )
 
-    style_renderer = CustomCSSStyle(
-        title, content, labels, css_path=Path(css_style)
-    )
+    style_renderer = PDFStyle(title, content, labels, css_path=Path(css_style))
     html = style_renderer.render_html()
 
     click.echo("🖨️  Rendering PDF...")
@@ -183,7 +179,7 @@ def md_dir(
             md_content, extensions=["fenced_code", "codehilite"]
         )
 
-        style_renderer = CustomCSSStyle(
+        style_renderer = PDFStyle(
             title, content, labels, css_path=Path(css_style)
         )
         html = style_renderer.render_html()

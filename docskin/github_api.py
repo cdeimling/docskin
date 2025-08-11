@@ -21,7 +21,7 @@ class GitHubIssueFetcher:
         self,
         repo: str,
         issue_number: int,
-        api_base: str = "https://api.github.com",
+        api_base: str = "https://github.com",
     ) -> None:
         """Initialize the GitHubIssueFetcher."""
         self.repo = repo
@@ -45,5 +45,4 @@ class GitHubIssueFetcher:
         url = f"{self.api_base}/repos/{self.repo}/issues/{self.issue_number}"
         response = self.session.get(url)
         response.raise_for_status()
-        return response.json()
         return response.json()
