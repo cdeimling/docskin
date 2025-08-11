@@ -13,6 +13,7 @@ from typing import Any, Callable
 import click
 
 from docskin.converter import GitHubIssuePdfRenderer, MarkdownPdfRenderer
+from docskin.setup import run_setup
 from docskin.styles import StyleManager
 
 
@@ -138,3 +139,16 @@ def md_dir(
         return
     for md_name, pdf_name in results:
         click.echo(f"  - {md_name} ➔ {pdf_name}")
+
+
+@main.command(name="setup")
+def setup_command() -> None:
+    """Install the necessary system and Python dependencies.
+
+    This command executes a series of steps to prepare the
+    environment for ``docskin``.  It delegates to the
+    :func:`run_setup` helper, which in turn uses the
+    :class:`SetupInstaller` class to perform installation tasks in
+    a safe and platform‑aware manner.
+    """
+    run_setup()

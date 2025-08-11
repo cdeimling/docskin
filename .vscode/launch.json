@@ -31,6 +31,14 @@
             "args": ["md-dir", "--input", "tests/resources/",
                 "--output", "tests/output"
             ]
+        },
+        {
+            "name": "docskin setup",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["setup"
+            ]
         }
     ]
 }
