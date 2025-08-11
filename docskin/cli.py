@@ -92,30 +92,32 @@ def github(
 @main.command(name="md")
 @click.option(
     "--output",
+    "output_pdf",
     required=True,
     type=click.Path(file_okay=True),
     help="Output directory for PDFs",
 )
 @click.option(
     "--input",
+    "input_md",
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=Path),
     required=True,
     help="Path to the Markdown file",
 )
 @common_options
 def md(
-    input: Path,  # noqa: A002
-    output: Path,
+    input_md: Path,
+    output_pdf: Path,
     logo: Path,  # noqa: ARG001
     css_style: Path,
 ) -> None:
     """Convert a local Markdown file to PDF with optional theming."""
-    click.echo(f"📄 Converting {input} to PDF using style '{css_style}'")
+    click.echo(f"📄 Converting {input_md} to PDF using style '{css_style}'")
 
-    with input.open("r", encoding="utf-8") as f:
+    with input_md.open("r", encoding="utf-8") as f:
         md_content = f.read()
 
-    title = input.stem
+    title = input_md.stem
     labels: list[str] = []
     content = markdown.markdown(
         md_content, extensions=["fenced_code", "codehilite"]
@@ -127,45 +129,47 @@ def md(
     html = style_renderer.render_html()
 
     click.echo("🖨️  Rendering PDF...")
-    HTML(string=html).write_pdf(output)
-    click.echo(f"✅ Saved as {output}")
+    HTML(string=html).write_pdf(output_pdf)
+    click.echo(f"✅ Saved as {output_pdf}")
 
 
 @main.command(name="md-dir")
 @click.option(
     "--output",
+    "output_md_folder",
     required=True,
     type=click.Path(file_okay=False, dir_okay=True),
     help="Output directory for PDFs",
 )
 @click.option(
     "--input",
+    "input_md_folder",
     required=True,
     type=click.Path(file_okay=False, exists=True, dir_okay=True),
     help="Directory containing Markdown files",
 )
 @common_options
 def md_dir(
-    input: Path,
+    input_md_folder: Path,
     logo: Path,  # noqa: ARG001
     css_style: Path,
-    output: Path,
+    output_md_folder: Path,
 ) -> None:
     """Convert all Markdown files in a directory to PDF."""
-    click.echo(f"📁 Scanning {input} for Markdown files...")
-    output = Path(output)
-    input = Path(input)
+    click.echo(f"📁 Scanning {input_md_folder} for Markdown files...")
+    output_md_folder = Path(output_md_folder)
+    input_md_folder = Path(input_md_folder)
 
-    output.mkdir(parents=True, exist_ok=True)
+    output_md_folder.mkdir(parents=True, exist_ok=True)
 
-    md_files = list(input.rglob("*.md"))
+    md_files = list(input_md_folder.rglob("*.md"))
     if not md_files:
         click.echo("⚠️  No Markdown files found.")
         return
 
     for path in md_files:
-        rel_path = path.relative_to(input)
-        output_path = output / rel_path.with_suffix(".pdf")
+        rel_path = path.relative_to(input_md_folder)
+        output_path = output_md_folder / rel_path.with_suffix(".pdf")
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         click.echo(f"📄 Rendering {rel_path} -> {output_path}")
@@ -185,4 +189,4 @@ def md_dir(
         html = style_renderer.render_html()
         HTML(string=html).write_pdf(output_path)
 
-    click.echo(f"✅ All Markdown files converted to PDF in {output}")
+    click.echo(f"✅ All Markdown files converted to PDF in {output_md_folder}")
