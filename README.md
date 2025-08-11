@@ -148,11 +148,14 @@ tests/
 
 The architecture of `docskin` is designed to be modular and extensible. The main components are:
 
+![docskin architecture](docs/architecture.svg)
+
 - **CLI**: The command-line interface for user interaction.
 - **MarkdownHTMLExtractor**: Extracts HTML from Markdown files.
 - **StyleManager**: Manages CSS styles and applies them to the HTML.
 - **PDFExporter**: Handles the conversion of styled HTML to PDF.
 - **GitHubIssueFetcher**: Fetches GitHub issues for conversion.
+
 
 ## 🛠️ TODO / Ideas
 
