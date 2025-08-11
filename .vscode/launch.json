@@ -3,8 +3,17 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [  
-               
+    "configurations": [
+        {
+            "name": "docskin github",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["github", "--repo", "cdeimling/docskin",
+                "--issue", "1",
+                "--output", "issue1.pdf"
+            ]
+        },
         {
             "name": "docskin md",
             "type": "debugpy",
@@ -15,13 +24,12 @@
             ]
         },
         {
-            "name": "docskin github",
+            "name": "docskin md-dir",
             "type": "debugpy",
             "request": "launch",
             "module": "docskin",
-            "args": ["github", "--repo", "cdeimling/docskin", 
-                "--issue", "1",
-                "--output", "issue1.pdf"
+            "args": ["md-dir", "--input", "tests/resources/",
+                "--output", "tests/output"
             ]
         }
     ]

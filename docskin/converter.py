@@ -32,7 +32,7 @@ class MarkdownHTMLExtractor:
         )
 
 
-class MarkdownToPDFConverter:
+class MarkdownPdfRenderer:
     """Converts Markdown files into GitHub-styled PDFs."""
 
     def __init__(self, style_manager: StyleManager) -> None:
@@ -40,21 +40,26 @@ class MarkdownToPDFConverter:
         self.style = style_manager
         self.extractor = MarkdownHTMLExtractor()
 
-    def convert_file(self, input_md_path: Path, output_pdf_path: Path) -> None:
+    def render_file(self, input_md_path: Path, output_pdf_path: Path) -> None:
         """Convert a single Markdown file to a PDF."""
         content = input_md_path.read_text(encoding="utf-8")
         title = input_md_path.stem
         html_content = self.markdown_to_html(content, title)
-        output_pdf_path.unlink(missing_ok=True)
+        if output_pdf_path.is_file():
+            output_pdf_path.unlink()
         HTML(string=html_content).write_pdf(output_pdf_path)
 
-    def convert_folder(
+    def render_folder(
         self, input_md_folder: Path, output_md_folder: Path
     ) -> Generator[tuple[str, str], Path, None]:
         """Convert all Markdown files in a folder to PDF."""
-        for md_file in input_md_folder.glob("*.md"):
-            output_path = output_md_folder / md_file.with_suffix(".pdf").name
-            self.convert_file(md_file, output_path)
+        for md_file in input_md_folder.rglob("*.md"):
+            relative_path = md_file.relative_to(input_md_folder).with_suffix(
+                ".pdf"
+            )
+            output_path = output_md_folder / relative_path
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            self.render_file(md_file, output_path)
             yield md_file.name, output_path.name
 
     def markdown_to_html(
@@ -74,12 +79,15 @@ class MarkdownToPDFConverter:
         return self.style.render_html(markdown_content, title, labels)
 
 
-class GitHubIssueToPDFService:
-    def __init__(self, style_manager: StyleManager):
+class GitHubIssuePdfRenderer:
+    """Service for converting GitHub issues to styled PDF documents."""
+
+    def __init__(self, style_manager: StyleManager) -> None:
+        """Initializes the converter and sets up a MarkdownHTMLExtractor."""
         self.style_manager = style_manager
         self.extractor = MarkdownHTMLExtractor()
 
-    def convert(
+    def render(
         self, repo: str, issue: int, api_base: str, output: Path
     ) -> None:
         fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)

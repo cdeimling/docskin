@@ -67,9 +67,7 @@ class TestDocskinCLI(unittest.TestCase):
             # prepare stub modules
             _prepare_stubs(tmp_path)
             # after stubs, import CLI
-            from docskin import (
-                cli as docskin_cli,
-            )  # import here to pick up stubs
+            import docskin.cli
 
             # create markdown file
             md_file = tmp_path / "sample.md"
@@ -78,13 +76,13 @@ class TestDocskinCLI(unittest.TestCase):
             css_file = tmp_path / "style.css"
             css_file.write_text("body { color: black; }")
             # output directory
-            output_dir = tmp_path / "outdir"
+            output_dir = tmp_path / "outdir" / md_file.with_suffix(".pdf").name
             # Create the output directory ahead of time so that the stub
             # understands it's a directory and writes into output.pdf within it.
             output_dir.mkdir(parents=True)
             # run CLI
             result = self.runner.invoke(
-                docskin_cli.main,
+                docskin.cli.main,
                 [
                     "md",
                     "--input",
@@ -105,7 +103,7 @@ class TestDocskinCLI(unittest.TestCase):
             tmp_path = Path(os.getcwd())
             # prepare stub modules
             _prepare_stubs(tmp_path)
-            from docskin import cli as docskin_cli
+            import docskin.cli
 
             # create directory with markdown files
             input_dir = tmp_path / "mds"
@@ -118,7 +116,7 @@ class TestDocskinCLI(unittest.TestCase):
             output_dir = tmp_path / "output"
             # run CLI
             result = self.runner.invoke(
-                docskin_cli.main,
+                docskin.cli.main,
                 [
                     "md-dir",
                     "--input",
@@ -140,7 +138,7 @@ class TestDocskinCLI(unittest.TestCase):
         with self.runner.isolated_filesystem():
             tmp_path = Path(os.getcwd())
             _prepare_stubs(tmp_path)
-            from docskin import cli as docskin_cli
+            import docskin.cli
 
             # empty directory
             input_dir = tmp_path / "empty"
@@ -149,7 +147,7 @@ class TestDocskinCLI(unittest.TestCase):
             css_file.write_text("body { color: black; }")
             output_dir = tmp_path / "out"
             result = self.runner.invoke(
-                docskin_cli.main,
+                docskin.cli.main,
                 [
                     "md-dir",
                     "--input",

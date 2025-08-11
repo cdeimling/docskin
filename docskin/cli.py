@@ -12,7 +12,7 @@ from typing import Any, Callable
 
 import click
 
-from docskin.converter import GitHubIssueToPDFService, MarkdownToPDFConverter
+from docskin.converter import GitHubIssuePdfRenderer, MarkdownPdfRenderer
 from docskin.styles import StyleManager
 
 
@@ -67,8 +67,8 @@ def github(
     )
 
     style_manager = StyleManager(css_style)
-    service = GitHubIssueToPDFService(style_manager)
-    service.convert(repo, issue, api_base, output)
+    service = GitHubIssuePdfRenderer(style_manager)
+    service.render(repo, issue, api_base, output)
     click.echo(f"✅ Saved as {output}")
 
 
@@ -97,8 +97,8 @@ def md(
     """Convert a local Markdown file to PDF with optional theming."""
     click.echo(f"📄 Rendering {input_md} to PDF...")
     style_manager = StyleManager(css_path=css_style)
-    converter = MarkdownToPDFConverter(style_manager)
-    converter.convert_file(input_md, output_pdf)
+    converter = MarkdownPdfRenderer(style_manager)
+    converter.render_file(input_md, output_pdf)
     click.echo(f"✅ Saved as {output_pdf}")
 
 
@@ -129,6 +129,12 @@ def md_dir(
     """Convert all Markdown files in a directory to PDF."""
     click.echo(f"📁 Scanning {input_md_folder} for Markdown files...")
     style_manager = StyleManager(css_path=css_style)
-    converter = MarkdownToPDFConverter(style_manager)
-    converter.convert_folder(input_md_folder, output_md_folder)
+    converter = MarkdownPdfRenderer(style_manager)
+    results = list(converter.render_folder(input_md_folder, output_md_folder))
     click.echo(f"✅ All Markdown files converted to PDF in {output_md_folder}")
+    click.echo("📄 Converted files:")
+    if not results:
+        click.echo("No Markdown files found")
+        return
+    for md_name, pdf_name in results:
+        click.echo(f"  - {md_name} ➔ {pdf_name}")
