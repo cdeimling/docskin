@@ -130,19 +130,29 @@ The full license texts for `docskin` and the bundled third-party components are 
 ```text
 docskin/
 ├── cli.py                # CLI entry point (Click commands: setup, md, md-dir, github)
-├── styles.py             # StyleManager: CSS loading & HTML rendering
 ├── converter.py          # MarkdownHTMLExtractor, MarkdownPdfRenderer, orchestration
 ├── github_api.py         # GitHub issue fetching
+├── styles.py             # StyleManager: CSS loading & HTML rendering
 ├── setup.py              # Dependency installation logic
-├── ...
 assets/
-├── markdown-dark.css     # GitHub Dark Theme CSS
+├── markdown-dark.css     # GitHub Dark Theme CSS [3rd party](https://github.com/sindresorhus/github-markdown-css)
+├── markdown-light.css    # GitHub Light Theme CSS [3rd party](https://github.com/sindresorhus/github-markdown-css)
 ├── minimal.css           # Minimal light theme CSS
-├── bosch.css             # Bosch Corporate Design CSS
 tests/
+├── resources/
+│   ├── markdown/         # Test Markdown files
 ├── test_cli.py           # CLI integration tests
-├── ...
 ```
+
+## Architecture
+
+The architecture of `docskin` is designed to be modular and extensible. The main components are:
+
+- **CLI**: The command-line interface for user interaction.
+- **MarkdownHTMLExtractor**: Extracts HTML from Markdown files.
+- **StyleManager**: Manages CSS styles and applies them to the HTML.
+- **PDFExporter**: Handles the conversion of styled HTML to PDF.
+- **GitHubIssueFetcher**: Fetches GitHub issues for conversion.
 
 ## 🛠️ TODO / Ideas
 
