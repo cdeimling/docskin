@@ -92,9 +92,22 @@ Commands:
 
 ## 💡 Notes
 
-- CSS is based on the GitHub style from [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
 - GitHub APIs use `.netrc` for authentication (if private repos).
 - For Bosch internal: Use `--api-base https://github.boschdevcloud.com/api/v3`
+
+## 📜 License and Third-Party Software
+
+`docskin` is licensed under the MIT License – see [LICENSE.txt](LICENSE.txt) for details.
+
+This software uses [WeasyPrint](https://weasyprint.org/) for PDF rendering.  
+WeasyPrint is licensed under the BSD 3-Clause License, and depends on system libraries such as Cairo, Pango, HarfBuzz, GDK-Pixbuf, and GLib, which are licensed under the LGPL or MIT licenses.
+
+Some CSS files in `assets/` are adapted from  
+[sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css),  
+which is licensed under the MIT License.
+
+The full license texts for `docskin` and the bundled third-party components are included in the [LICENSE.txt](LICENSE.txt) file in this repository.
+
 
 ## 📁 Structure
 
@@ -105,9 +118,9 @@ docskin/
 ├── github_api.py      # GitHub API support
 ├── ...
 assets/
-├── markdown-dark.css
+├── markdown-dark.css   # 3rd Party CSS [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
+├── markdown-light.css   # 3rd Party CSS [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
 ├── minimal.css
-├── bosch.css
 ```
 
 ## 🛠️ TODO / Ideas
@@ -119,4 +132,4 @@ assets/
 
 ---
 
-Made with ❤️ by your Markdown ↔ PDF Toolkit
+Made with ❤️ by a senior engineer passionate about open source.
