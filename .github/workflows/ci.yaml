@@ -35,14 +35,21 @@ jobs:
       run: uv sync --locked
 
     - name: Test CLI
-      run: uv run pytest tests
-
-    - name: Lint with Ruff
-      id: ruff
       run: |
-        uv run ruff check . > ruff_output.txt || true
-        echo "Ruff findings summary:" > $GITHUB_STEP_SUMMARY
-        head -n 50 ruff_output.txt >> $GITHUB_STEP_SUMMARY
+        uv run pytest tests \
+          --cov=docskin \
+          --cov-report=xml:coverage.xml \
+          --cov-report=term-missing
 
-    - name: Format check with Black
-      run: uv run ruff format --check docskin
+    - name: Pytest coverage comment
+      uses: MishaKav/pytest-coverage-comment@v1.1.51
+      with:
+        report: coverage.xml
+
+    - uses: astral-sh/ruff-action@v3
+      with:
+        args: check docskin --output-format=github . --exit-zero .
+
+    - uses: astral-sh/ruff-action@v3
+      with:
+        args: format --check docskin

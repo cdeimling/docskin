@@ -1,0 +1,59 @@
+<svg width="800" height="370" viewBox="0 0 800 370" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f8cff"/>
+    </marker>
+    <style type="text/css"><![CDATA[
+      .title { font: bold 18px sans-serif; fill: #fff; }
+      .label { font: 14px sans-serif; fill: #fff; }
+      .box { fill: #222; stroke: #4f8cff; stroke-width: 2; }
+      .arrow { stroke: #4f8cff; stroke-width: 2; marker-end: url(#arrowhead); }
+      .output { fill: #111; stroke: #4f8cff; stroke-width: 2; }
+    ]]></style>
+  </defs>
+  <rect x="0" y="0" width="800" height="370" fill="#181a20"/>
+  <text x="250" y="35" class="title">docskin PDF Workflow (GitHub &amp; Markdown)</text>
+
+  <!-- CLI -->
+  <rect x="40" y="80" width="180" height="50" rx="10" class="box"/>
+  <text x="130" y="110" text-anchor="middle" class="label">CLI (Click)</text>
+
+  <!-- MarkdownPdfRenderer -->
+  <rect x="270" y="60" width="200" height="50" rx="10" class="box"/>
+  <text x="370" y="90" text-anchor="middle" class="label">MarkdownPdfRenderer</text>
+
+  <!-- GithubIssuePdfRenderer -->
+  <rect x="270" y="140" width="200" height="50" rx="10" class="box"/>
+  <text x="370" y="170" text-anchor="middle" class="label">GitHubIssuePdfRenderer</text>
+
+  <!-- GitHubIssueFetcher -->
+  <rect x="520" y="140" width="180" height="50" rx="10" class="box"/>
+  <text x="610" y="170" text-anchor="middle" class="label">GitHubIssueFetcher</text>
+
+  <!-- MarkdownHTMLExtractor -->
+  <rect x="520" y="60" width="180" height="50" rx="10" class="box"/>
+  <text x="610" y="90" text-anchor="middle" class="label">MarkdownHTMLExtractor</text>
+
+  <!-- StyleManager -->
+  <rect x="270" y="220" width="200" height="50" rx="10" class="box"/>
+  <text x="370" y="250" text-anchor="middle" class="label">StyleManager</text>
+
+  <!-- PDFExporter -->
+  <rect x="520" y="220" width="180" height="50" rx="10" class="box"/>
+  <text x="610" y="250" text-anchor="middle" class="label">PDFExporter</text>
+
+  <!-- PDF Output -->
+  <rect x="520" y="300" width="180" height="40" rx="10" class="output"/>
+  <text x="610" y="325" text-anchor="middle" class="label">PDF Output</text>
+
+  <!-- Arrows (no overlap) -->
+  <line x1="220" y1="105" x2="270" y2="85" class="arrow"/>
+  <line x1="220" y1="105" x2="270" y2="165" class="arrow"/>
+  <line x1="470" y1="165" x2="520" y2="165" class="arrow"/>
+  <line x1="470" y1="165" x2="520" y2="85" class="arrow"/>
+  <line x1="470" y1="85" x2="520" y2="85" class="arrow"/>
+  <line x1="370" y1="110" x2="370" y2="220" class="arrow"/>
+  <line x1="370" y1="190" x2="370" y2="220" class="arrow"/>
+  <line x1="470" y1="245" x2="520" y2="245" class="arrow"/>
+  <line x1="610" y1="270" x2="610" y2="300" class="arrow"/>
+</svg>

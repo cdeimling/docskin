@@ -72,23 +72,38 @@ Add a logo at the top of the PDF with `--logo path/to/logo.png`.
 
 ## 📦 CLI Overview
 
-```bash
-docskin --help
-```
+The `docskin` CLI provides the following commands:
 
-```text
-Usage: docskin [OPTIONS] COMMAND [ARGS]...
+- **setup**
+  Installs all required Python and system dependencies for docskin, including WeasyPrint and its Linux libraries.
+  Example:
+  ```bash
+  docskin setup
+  ```
 
-  📄 Convert Markdown or GitHub issues to styled PDF files.
+- **md**
+  Converts a single Markdown file to a styled PDF.
+  Uses the MarkdownHTMLExtractor for parsing, StyleManager for HTML/CSS rendering, and WeasyPrint for PDF export.
+  Example:
+  ```bash
+  docskin md --input README.md --output README.pdf --css-style assets/minimal.css
+  ```
 
-Options:
-  --help  Show this message and exit.
+- **md-dir**
+  Recursively converts all Markdown files in a directory (and subdirectories) to PDFs, preserving the folder structure.
+  Example:
+  ```bash
+  docskin md-dir --input ./docs --output ./pdfs --css-style assets/markdown-dark.css
+  ```
 
-Commands:
-  md       Convert a local Markdown file to PDF with optional theming.
-  md-dir   Convert all Markdown files in a directory to PDF.
-  github   Convert a GitHub issue to PDF.
-```
+- **github**
+  Fetches a GitHub issue and converts it to a styled PDF. Supports custom API endpoints and authentication for private repos.
+  Example:
+  ```bash
+  docskin github --repo owner/repo --issue 42 --output issue-42.pdf --css-style assets/markdown-dark.css
+  ```
+
+---
 
 ## 💡 Notes
 
@@ -109,19 +124,38 @@ which is licensed under the MIT License.
 The full license texts for `docskin` and the bundled third-party components are included in the [LICENSE.txt](LICENSE.txt) file in this repository.
 
 
-## 📁 Structure
+
+## �️ Updated File Structure
 
 ```text
 docskin/
-├── cli.py             # CLI definition via Click
-├── styles.py          # CSS styles & HTML renderer
-├── github_api.py      # GitHub API support
-├── ...
+├── cli.py                # CLI entry point (Click commands: setup, md, md-dir, github)
+├── converter.py          # MarkdownHTMLExtractor, MarkdownPdfRenderer, orchestration
+├── github_api.py         # GitHub issue fetching
+├── styles.py             # StyleManager: CSS loading & HTML rendering
+├── setup.py              # Dependency installation logic
 assets/
-├── markdown-dark.css   # 3rd Party CSS [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
-├── markdown-light.css   # 3rd Party CSS [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
-├── minimal.css
+├── markdown-dark.css     # GitHub Dark Theme CSS [3rd party](https://github.com/sindresorhus/github-markdown-css)
+├── markdown-light.css    # GitHub Light Theme CSS [3rd party](https://github.com/sindresorhus/github-markdown-css)
+├── minimal.css           # Minimal light theme CSS
+tests/
+├── resources/
+│   ├── markdown/         # Test Markdown files
+├── test_cli.py           # CLI integration tests
 ```
+
+## Architecture
+
+The architecture of `docskin` is designed to be modular and extensible. The main components are:
+
+![docskin architecture](docs/architecture.svg)
+
+- **CLI**: The command-line interface for user interaction.
+- **MarkdownHTMLExtractor**: Extracts HTML from Markdown files.
+- **StyleManager**: Manages CSS styles and applies them to the HTML.
+- **PDFExporter**: Handles the conversion of styled HTML to PDF.
+- **GitHubIssueFetcher**: Fetches GitHub issues for conversion.
+
 
 ## 🛠️ TODO / Ideas
 

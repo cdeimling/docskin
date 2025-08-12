@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "docskin github",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["github", "--repo", "cdeimling/docskin",
+                "--issue", "1",
+                "--output", "issue1.pdf"
+            ]
+        },
+        {
+            "name": "docskin md",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["md", "--input", "README.md", 
+                "--output", "README.pdf"
+            ]
+        },
+        {
+            "name": "docskin md-dir",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["md-dir", "--input", "tests/resources/",
+                "--output", "tests/output"
+            ]
+        },
+        {
+            "name": "docskin setup",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "docskin",
+            "args": ["setup"
+            ]
+        }
+    ]
+}
