@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0](https://github.com/cdeimling/docskin/compare/v0.1.0...v0.2.0) (2025-08-12)
+
+
+### Features
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) enable auto-publishing ([fa3a4a8](https://github.com/cdeimling/docskin/commit/fa3a4a81c0ce57f54b9cdaf2f4fef4785f6627d8))
+* [#1](https://github.com/cdeimling/docskin/issues/1) enable auto-publishing ([5ad3e5a](https://github.com/cdeimling/docskin/commit/5ad3e5a7a463a1ff844b7ebd107c68b96d2ebe46))
+
 ## 0.1.0 (2025-08-12)
 
 
