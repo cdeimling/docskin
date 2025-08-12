@@ -1,21 +1,24 @@
 name: release-please
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.rp.outputs.release_created }}
-      tag_name:        ${{ steps.rp.outputs.tag_name }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
     steps:
-    - uses: googleapis/release-please-action@v4
+    - id: rp
+      uses: googleapis/release-please-action@v4
       with:
         release-type: python
         package-name: docskin
@@ -37,7 +40,6 @@ jobs:
     - name: Build package
       run: uv build
 
-        # Smoke test: create venv, install wheel, import package
     - name: Install and import smoke test
       run: |
         uv venv .venv
