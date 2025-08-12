@@ -74,6 +74,7 @@ exclude = [
     "build",
     "dist",
     "node_modules",
+    "tests",
     "venv",
     "__init__.py",
 ]
