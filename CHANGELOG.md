@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.4](https://github.com/cdeimling/docskin/compare/v0.2.3...v0.2.4) (2025-08-12)
+
+
+### Bug Fixes
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) workflow dispatch bugfixing ([66ed110](https://github.com/cdeimling/docskin/commit/66ed110bf5e8a8e52d69af7f45734c4cffb0400b))
+
+
+### Documentation
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([8e3f629](https://github.com/cdeimling/docskin/commit/8e3f629ea60fdb798692fa90867fe539cdbbe60e))
+
 ## [0.2.3](https://github.com/cdeimling/docskin/compare/v0.2.2...v0.2.3) (2025-08-12)
 
 
