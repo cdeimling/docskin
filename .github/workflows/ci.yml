@@ -60,7 +60,7 @@ jobs:
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: 'docs: update coverage badge'
+        commit_message: 'docs: #1 update coverage badge'
         file_pattern: README.md
 
     - uses: astral-sh/ruff-action@v3
