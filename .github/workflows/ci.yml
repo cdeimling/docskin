@@ -41,10 +41,13 @@ jobs:
           --cov-report=xml:coverage.xml \
           --cov-report=term-missing
 
-    - name: Pytest coverage comment
-      uses: MishaKav/pytest-coverage-comment@v1.1.51
+    - name: Upload coverage to Codecov
+      if: github.ref == 'refs/heads/main'
+      uses: codecov/codecov-action@v5
       with:
-        report: coverage.xml
+        files: coverage.xml
+        flags: unittests
+        fail_ci_if_error: true
 
     - uses: astral-sh/ruff-action@v3
       with:
@@ -53,3 +56,8 @@ jobs:
     - uses: astral-sh/ruff-action@v3
       with:
         args: format --check docskin
+
+    - name: Run Bandit
+      run: |
+        uv run bandit -r docskin
+

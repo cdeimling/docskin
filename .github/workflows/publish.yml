@@ -1,0 +1,23 @@
+name: publish
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Enable caching
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+
+    - name: Build package
+      run: uv build
+
+    - name: Publish to PyPI
+      env:
+        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      run: uv publish

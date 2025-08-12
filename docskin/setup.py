@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import platform
 import shutil
-import subprocess
+import subprocess  # nosec
 
 import click
 
@@ -60,9 +60,11 @@ class SetupInstaller:
 
         try:
             click.echo("[1/4] Installing system dependencies for WeasyPrint..")
-            # Update package lists quietly
+
             sudo_path = shutil.which("sudo") or "sudo"
-            subprocess.run([sudo_path, apt_get, "update", "-qq"], check=True)
+            apt_get = shutil.which("apt-get") or "apt-get"
+            # All arguments are static and not user-controlled
+            subprocess.run([sudo_path, apt_get, "update", "-qq"], check=True)  # nosec
             subprocess.run(
                 [
                     sudo_path,
@@ -77,7 +79,7 @@ class SetupInstaller:
                     "libffi-dev",
                 ],
                 check=True,
-            )
+            )  # nosec
         except (subprocess.CalledProcessError, FileNotFoundError):
             # In test environments or where sudo is unavailable, avoid failing
             click.echo(
