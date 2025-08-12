@@ -1,10 +1,12 @@
 # 📄 docskin
 
 [![Build Status](https://github.com/cdeimling/docskin/actions/workflows/ci.yml/badge.svg)](https://github.com/cdeimling/docskin/actions)
-[![cov](https://github.com/cdeimling/docskin/actions/workflows/coverage.yml/badge.svg?branch=main)](https://github.com/cdeimling/docskin/actions)
 [![image](https://img.shields.io/pypi/v/ruff.svg)](https://pypi.python.org/pypi/ruff)
 [![Security Status](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 [![PyPI Version](https://img.shields.io/pypi/v/docskin?style=flat-square)](https://pypi.org/project/docskin/)
+
+<!-- Pytest Coverage Comment:Begin -->
+<!-- Pytest Coverage Comment:End -->
 
 Convert **Markdown files** and **GitHub issues** into styled PDF documents – with full support for CSS themes, logos, and directory processing.
 
