@@ -30,9 +30,12 @@ jobs:
       uses: astral-sh/setup-uv@v6
       with:
         enable-cache: true
+
+    - name: Update uv.lock
+      run: uv lock --upgrade
           
     - name: Sync dependencies
-      run: uv sync --locked
+      run: uv sync
 
     - name: Test CLI
       run: |
@@ -61,7 +64,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: 'docs: #1 update coverage badge'
-        file_pattern: README.md
+        file_pattern: 'README.md uv.lock'
 
     - uses: astral-sh/ruff-action@v3
       with:
