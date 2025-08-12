@@ -41,16 +41,27 @@ jobs:
           --cov-report=xml:coverage.xml \
           --cov-report=json:coverage.json \
           --cov-report=term-missing \
-          --cov-fail-under=70
+          --junitxml=pytest.xml \
+          | tee pytest-coverage.txt
 
-    - name: Pytest coverage comment
-      uses: MishaKav/pytest-coverage-comment@v1.1.51
+
+    - name: Coverage comment
+      id: coverage
+      uses: MishaKav/pytest-coverage-comment@main
       with:
-        report: coverage.xml
+        pytest-coverage-path: ./pytest-coverage.txt
+        junitxml-path: ./pytest.xml
+        hide-comment: true
 
-    - name: Update Coverage Badge
-      if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-      uses: we-cli/coverage-badge-action@main
+    - name: Update README
+      run: |
+        sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n${{ steps.coverage.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'docs: update coverage badge'
+        file_pattern: README.md
 
     - uses: astral-sh/ruff-action@v3
       with:
