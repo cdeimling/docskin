@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1](https://github.com/cdeimling/docskin/compare/v0.2.0...v0.2.1) (2025-08-12)
+
+
+### Bug Fixes
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) auto-release ([b7bd73d](https://github.com/cdeimling/docskin/commit/b7bd73dcf306d57deb5a33a929c3d829702bc316))
+* [#1](https://github.com/cdeimling/docskin/issues/1) auto-release ([0f4cf92](https://github.com/cdeimling/docskin/commit/0f4cf92c45afd8ec6051b8a603350e429a82683c))
+
+
+### Documentation
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([367bf74](https://github.com/cdeimling/docskin/commit/367bf74a6b8a766cdc00155407d86a0a10180454))
+
 ## [0.2.0](https://github.com/cdeimling/docskin/compare/v0.1.0...v0.2.0) (2025-08-12)
 
 

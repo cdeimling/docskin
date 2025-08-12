@@ -1,6 +1,6 @@
 [project]
 name = "docskin"
-version = "0.2.0"
+version = "0.2.1"
 description = "Convert Markdown files to PDF with GitHub-like styling using WeasyPrint"
 authors = [
     { name = "Constantin v. Deimling", email = "c.deimling@web.de" }
