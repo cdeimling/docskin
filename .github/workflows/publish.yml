@@ -14,8 +14,34 @@ jobs:
       with:
         enable-cache: true
 
+    - name: Update uv.lock
+      run: |
+        uv lock --upgrade
+        if git diff --quiet -- uv.lock; then
+          echo "No lockfile changes."
+        else
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add uv.lock
+          git commit -m "chore: update uv.lock for release"
+          git push
+        fi
+
     - name: Build package
       run: uv build
+
+        # Smoke test: create venv, install wheel, import package
+    - name: Install and import smoke test
+      run: |
+        uv venv .venv
+        . .venv/bin/activate
+        uv pip install dist/*.whl
+        python - <<'PY'
+        import sys
+        print("Python:", sys.version)
+        import docskin  # adjust if your import root differs
+        print("Imported docskin OK")
+        PY
 
     - name: Publish to PyPI
       env:
