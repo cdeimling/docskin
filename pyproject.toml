@@ -162,11 +162,11 @@ build-backend = "hatchling.build"
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["docskin_cli", "docskin_ext"]
+packages = ["docskin"]
 include = [
-  "assets/**",
-  "LICENSE.txt",
-  "README.md",
+    "assets/**",
+    "LICENSE.txt",
+    "README.md",
 ]
 
 [tool.hatch.build.targets.sdist]
