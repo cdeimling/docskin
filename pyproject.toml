@@ -1,6 +1,6 @@
 [project]
 name = "docskin"
-version = "0.2.2"
+version = "0.2.4"
 description = "Convert Markdown files to PDF with GitHub-like styling using WeasyPrint"
 authors = [
     { name = "Constantin v. Deimling", email = "c.deimling@web.de" }
@@ -162,11 +162,11 @@ build-backend = "hatchling.build"
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["docskin_cli", "docskin_ext"]
+packages = ["docskin"]
 include = [
-  "assets/**",
-  "LICENSE.txt",
-  "README.md",
+    "assets/**",
+    "LICENSE.txt",
+    "README.md",
 ]
 
 [tool.hatch.build.targets.sdist]
