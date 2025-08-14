@@ -59,7 +59,10 @@ class StyleManager:
                     {self.css_text}
                 </style>
             </head>
-            <body class={self.css_class}>
+            <body class=markdown-body mode-slide>
+                <div class="screen-header">
+                    <img class="brand-logo" src="{self.logo_path}" alt="Logo">
+                </div>
                 <h1>{title}</h1>
                 {labels_html}
                 {content}

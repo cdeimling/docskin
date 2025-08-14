@@ -46,7 +46,7 @@ class MarkdownPdfRenderer:
         html_content = self.markdown_to_html(content, title)
         if output_pdf_path.is_file():
             output_pdf_path.unlink()
-        HTML(string=html_content).write_pdf(output_pdf_path)
+        HTML(string=html_content, base_url=".").write_pdf(output_pdf_path)
 
     def render_folder(
         self, input_md_folder: Path, output_md_folder: Path
@@ -94,8 +94,8 @@ class GitHubIssuePdfRenderer:
         title = issue_data["title"]
         labels = [label["name"] for label in issue_data.get("labels", [])]
         content = self.extractor.extract(issue_data["body"])
-        html = self.style_manager.render_html(content, title, labels)
-        HTML(string=html).write_pdf(output)
+        html_content = self.style_manager.render_html(content, title, labels)
+        HTML(string=html_content, base_url=".").write_pdf(output)
 
 
 def get_markdown_converter(
