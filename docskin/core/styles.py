@@ -60,7 +60,11 @@ class StyleManager:
                 </style>
             </head>
             <body class="{self.css_class}">
-                <h1>{title}<img class="brand-logo" src="{self.logo_path}" alt="Logo"></h1>
+                <h1>{title}
+                    <img class="brand-logo"
+                         src="{self.logo_path}"
+                         alt="Logo">
+                </h1>
                 {labels_html}
                 {content}
             </body>
