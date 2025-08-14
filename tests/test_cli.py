@@ -78,19 +78,20 @@ class TestDocskinCLI(unittest.TestCase):
             # output directory
             output_dir = tmp_path / "outdir" / md_file.with_suffix(".pdf").name
             # Create the output directory ahead of time so that the stub
-            # understands it's a directory and writes into output.pdf within it.
+            # understands it's a directory and writes into output.pdf within
+            # it.
             output_dir.mkdir(parents=True)
             # run CLI
             result = self.runner.invoke(
-                docskin.cli.main,
+                docskin.cli.cli,
                 [
+                    "--css-style",
+                    str(css_file),
                     "md",
                     "--input",
                     str(md_file),
                     "--output",
                     str(output_dir),
-                    "--css-style",
-                    str(css_file),
                 ],
             )
             self.assertEqual(result.exit_code, 0, msg=result.output)
@@ -116,15 +117,15 @@ class TestDocskinCLI(unittest.TestCase):
             output_dir = tmp_path / "output"
             # run CLI
             result = self.runner.invoke(
-                docskin.cli.main,
+                docskin.cli.cli,
                 [
+                    "--css-style",
+                    str(css_file),
                     "md-dir",
                     "--input",
                     str(input_dir),
                     "--output",
                     str(output_dir),
-                    "--css-style",
-                    str(css_file),
                 ],
             )
             self.assertEqual(result.exit_code, 0, msg=result.output)
@@ -147,15 +148,15 @@ class TestDocskinCLI(unittest.TestCase):
             css_file.write_text("body { color: black; }")
             output_dir = tmp_path / "out"
             result = self.runner.invoke(
-                docskin.cli.main,
+                docskin.cli.cli,
                 [
+                    "--css-style",
+                    str(css_file),
                     "md-dir",
                     "--input",
                     str(input_dir),
                     "--output",
                     str(output_dir),
-                    "--css-style",
-                    str(css_file),
                 ],
             )
             self.assertEqual(result.exit_code, 0, msg=result.output)
@@ -170,7 +171,7 @@ class TestDocskinCLI(unittest.TestCase):
             # monkeypatch GitHubIssueFetcher.fetch to return a fake issue
             from unittest.mock import patch
 
-            from docskin import cli as docskin_cli
+            import docskin.cli
 
             fake_issue = {
                 "title": "Fake Issue",
@@ -182,12 +183,14 @@ class TestDocskinCLI(unittest.TestCase):
             css_file.write_text("body { color: black; }")
             output_file = tmp_path / "issue.pdf"
             with patch(
-                "docskin.github_api.GitHubIssueFetcher.fetch",
+                "docskin.core.github_api.GitHubIssueFetcher.fetch",
                 return_value=fake_issue,
             ):
                 result = self.runner.invoke(
-                    docskin_cli.main,
+                    docskin.cli.cli,
                     [
+                        "--css-style",
+                        str(css_file),
                         "github",
                         "--repo",
                         "dummy/repo",
@@ -195,8 +198,6 @@ class TestDocskinCLI(unittest.TestCase):
                         "1",
                         "--output",
                         str(output_file),
-                        "--css-style",
-                        str(css_file),
                     ],
                 )
             self.assertEqual(result.exit_code, 0, msg=result.output)

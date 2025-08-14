@@ -1,7 +1,7 @@
 [project]
 name = "docskin"
 version = "0.2.4"
-description = "Convert Markdown files to PDF with GitHub-like styling using WeasyPrint"
+description = "Style your documents - convert Markdown files and GitHub issues into styled PDF documents in your corporate skin."
 authors = [
     { name = "Constantin v. Deimling", email = "c.deimling@web.de" }
 ]
@@ -117,7 +117,7 @@ disable_warnings = ["couldnt-parse", "no-data-collected"]
 include = ["docskin/**/*.py"]
 
 [project.scripts]
-docskin = "docskin.cli:main"
+docskin = "docskin.__main__:main"
 
 ### bandit config
 [tool.bandit]

@@ -1,0 +1,136 @@
+
+/*
+  corporate-sample-design.css — slides use a 16:9 screen page (1920x1080),
+  docs remain A4 portrait; web unchanged. Designed for docskin.
+*/
+
+:root{
+  --c-dk1:#111111;
+  --c-lt1:#ffffff;
+  --c-accent1:#007bc0;
+  --c-accent2:#004975;
+  --c-accent3:#007bc0;
+  --c-accent4:#004975;
+  --c-accent5:#007bc0;
+  --c-accent6:#004975;
+  --c-link:#00629b;
+  --font-major:"Helvetica", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-minor:"Helvetica", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --fs-title:44pt;
+  --fs-body:24pt;
+  --fs-doc:11pt;
+  --lh:1.35;
+  --s-1:4px;
+  --s-2:8px;
+  --s-3:12px;
+  --s-4:16px;
+  --s-6:24px;
+  --s-8:32px;
+  --s-12:48px;
+  --s-16:64px;
+  /* 16:9 slide canvas baseline */
+  --slide-w:1920px;
+  --slide-h:1080px;
+}
+
+.docskin, .markdown-body{ color:var(--c-dk1); background:var(--c-lt1); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+
+/* ======================== SLIDES: 16:9 screens ======================== */
+.markdown-body.mode-slide{ font-family:var(--font-minor); line-height:var(--lh); max-width:var(--slide-w); margin:0 auto; }
+
+@media print{
+  .markdown-body.mode-slide{ page: slide-169; }
+  @page slide-169{ size: 1920px 1080px; margin: 0; }
+}
+
+.markdown-body.mode-slide h1{
+  break-before:page; page-break-before:always;
+  margin:0 0 var(--s-6) 0;
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:var(--font-major); font-size:var(--fs-title); line-height:1.15; font-weight:600; page-break-inside: avoid; break-inside: avoid;
+}
+.markdown-body.mode-slide h1:first-of-type{ break-before:avoid; page-break-before:auto; }
+
+.markdown-body.mode-slide hr{ break-before:page; page-break-before:always; border:0; height:0; visibility:hidden; margin:0; }
+
+.markdown-body.mode-slide :is(p,ul,ol){ font-size:var(--fs-body); margin:0 0 var(--s-3) 0; }
+.markdown-body.mode-slide ul{ padding-left:1.2em; }
+
+.markdown-body.mode-slide h1 img.brand-logo {
+    height: 80px;
+    margin-left: 1rem;   /* or 0.5rem for less space */
+    margin-right: 0;     /* ensure no extra space on the right */
+    flex-shrink: 0;
+    display: block;
+}
+
+.markdown-body.mode-slide :is(ul,ol,table,pre,blockquote){ break-inside:avoid; page-break-inside:avoid; }
+
+@media screen{
+  .markdown-body.mode-slide{ padding: 0; }
+  .markdown-body.mode-slide .slide-canvas{
+    width: min(100vw, var(--slide-w));
+    aspect-ratio: 16/9;
+    margin: 0 auto; background: var(--c-lt1);
+    display: grid; grid-template-rows: auto 1fr; gap: var(--s-6);
+    padding: var(--s-12) var(--s-16);
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+  }
+}
+
+/* Slides: 16:9 PDF page with safe margins so header/footer aren't at the edge */
+@media print {
+  .markdown-body.mode-slide { page: slide-169; }
+
+  /* px here are print CSS px (≈ 1/96 inch). Tune to your taste. */
+  @page slide-169 {
+    size: 1920px 1080px;
+    /* Safe area around the content so margin boxes sit comfortably inside */
+    margin-top: 48px;      /* ~12.7 mm */
+    margin-right: 64px;    /* ~16.9 mm */
+    margin-bottom: 64px;   /* was 0 → this lifts the page number */
+    margin-left: 64px;
+
+    /* Running header / footer pulled from the document */
+    @top-right   { content: element(doc-header) }
+    @bottom-left { content: element(doc-footer) }
+    @bottom-right{ content: counter(page) " / " counter(pages) }
+  }
+}
+
+/* ============================ DOCS (A4) ============================ */
+.markdown-body.mode-doc{ font-family:var(--font-minor); font-size:var(--fs-doc); line-height:1.6; max-width:72ch; margin:0 auto; padding:var(--s-8); }
+@media print{ .markdown-body.mode-doc{ page:doc-port; } @page doc-port{ size:A4 portrait; margin:20mm 18mm 22mm 18mm; } }
+.markdown-body.mode-doc h1{ font-family:var(--font-major); font-weight:700; font-size:2rem; margin:var(--s-8) 0 var(--s-4); }
+.markdown-body.mode-doc h2{ font-weight:700; font-size:1.5rem; margin:var(--s-6) 0 var(--s-3); }
+.markdown-body.mode-doc h3{ font-weight:600; font-size:1.2rem; margin:var(--s-4) 0 var(--s-2); }
+.markdown-body.mode-doc p{ margin:var(--s-3) 0; }
+.markdown-body.mode-doc a{ color:var(--c-link); text-decoration:none; }
+.markdown-body.mode-doc a:hover{ text-decoration:underline; }
+.markdown-body.mode-doc blockquote{ border-left:4px solid var(--c-accent1); padding:var(--s-2) var(--s-4); background:#00000008; }
+.markdown-body.mode-doc code{ font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.95em; background:#0000000e; padding:0 .3em; border-radius:4px; }
+.markdown-body.mode-doc pre{ overflow:auto; background:#0000000e; padding:var(--s-4); border-radius:6px; }
+.markdown-body.mode-doc table{ border-collapse:collapse; width:100%; font-variant:tabular-nums; }
+.markdown-body.mode-doc th, .markdown-body.mode-doc td{ border:1px solid #e0e0e0; padding:.5rem .6rem; }
+.markdown-body.mode-doc thead th{ background:#f7f7f7; }
+.markdown-body.mode-doc hr{ border:0; border-top:1px solid #ddd; margin:var(--s-8) 0; }
+
+@media print{
+  .print-header{ position:running(doc-header); }
+  .print-footer{ position:running(doc-footer); }
+  @page doc-port{ @top-right{ content:element(doc-header) } @bottom-left{ content:element(doc-footer) } @bottom-right{ content:counter(page) " / " counter(pages) } }
+}
+.print-header{ display:flex; align-items:center; gap:.5rem; justify-content:flex-end; font-size:10pt; color:#666; }
+.print-header img.brand-logo{ height:12mm; }
+.print-footer{ font-size:10pt; color:#666; }
+
+/* ============================ WEB ============================ */
+.markdown-body.mode-web{ font-family:var(--font-minor); font-size:16px; line-height:1.65; max-width:72rem; margin:0 auto; padding:var(--s-8); }
+.markdown-body.mode-web h1{ font-family:var(--font-major); font-size:clamp(1.8rem,2vw + 1rem,2.4rem); margin:var(--s-8) 0 var(--s-4); }
+.markdown-body.mode-web h2{ font-size:clamp(1.4rem,1.2vw + 1rem,1.8rem); margin:var(--s-6) 0 var(--s-3); }
+.markdown-body.mode-web h3{ font-size:1.2rem; margin:var(--s-4) 0 var(--s-2); }
+.markdown-body.mode-web a{ color:var(--c-link); }
+
+.accent-1{ color:var(--c-accent1); } .accent-2{ color:var(--c-accent2); }
+@media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+@media print{ *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }

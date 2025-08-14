@@ -92,3 +92,13 @@ Portions of the CSS in `assets/markdown-dark.css` are adapted from:
     Licensed under the MIT License
 
 Source: https://github.com/sindresorhus/github-markdown-css
+
+4) GitHub Logo Asset (MIT)
+---------------------------
+The file `assets/github.svg.png` is adapted from:
+
+    Primer Octicons
+    Copyright (c) GitHub, Inc.
+    Licensed under the MIT License
+
+Source: https://github.com/primer/octicons?tab=readme-ov-file

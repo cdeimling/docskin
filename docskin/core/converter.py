@@ -8,12 +8,11 @@ if TYPE_CHECKING:
     from collections.abc import Generator
     from pathlib import Path
 
-    from .styles import StyleManager
-
 import markdown
 from weasyprint import HTML
 
-from .github_api import GitHubIssueFetcher
+from docskin.core.github_api import get_github_issue
+from docskin.core.styles import StyleManager
 
 
 class MarkdownHTMLExtractor:
@@ -47,7 +46,7 @@ class MarkdownPdfRenderer:
         html_content = self.markdown_to_html(content, title)
         if output_pdf_path.is_file():
             output_pdf_path.unlink()
-        HTML(string=html_content).write_pdf(output_pdf_path)
+        HTML(string=html_content, base_url=".").write_pdf(output_pdf_path)
 
     def render_folder(
         self, input_md_folder: Path, output_md_folder: Path
@@ -90,10 +89,26 @@ class GitHubIssuePdfRenderer:
     def render(
         self, repo: str, issue: int, api_base: str, output: Path
     ) -> None:
-        fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)
-        issue_data = fetcher.fetch()
+        """Fetch a GitHub issue and render it as a styled PDF."""
+        issue_data = get_github_issue(repo, issue, api_base=api_base)
         title = issue_data["title"]
         labels = [label["name"] for label in issue_data.get("labels", [])]
         content = self.extractor.extract(issue_data["body"])
-        html = self.style_manager.render_html(content, title, labels)
-        HTML(string=html).write_pdf(output)
+        html_content = self.style_manager.render_html(content, title, labels)
+        HTML(string=html_content, base_url=".").write_pdf(output)
+
+
+def get_markdown_converter(
+    css_style: Path, css_class: str, logo: Path
+) -> MarkdownPdfRenderer:
+    """Get a Markdown to PDF converter."""
+    style_manager = StyleManager(css_style, css_class, logo)
+    return MarkdownPdfRenderer(style_manager)
+
+
+def get_github_issue_converter(
+    css_style: Path, css_class: str, logo: Path
+) -> GitHubIssuePdfRenderer:
+    """Get a GitHub issue to PDF converter."""
+    style_manager = StyleManager(css_style, css_class, logo)
+    return GitHubIssuePdfRenderer(style_manager)

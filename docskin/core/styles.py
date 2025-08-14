@@ -20,12 +20,10 @@ class StyleManager:
         body_class: CSS class for <body> (optional).
     """
 
-    def __init__(self, css_path: Path) -> None:
+    def __init__(self, css_path: Path, css_class: str, logo_path: Path) -> None:
         """Initialize PDFStyle with required fields."""
-        if not css_path.is_file():
-            exception_msg = f"CSS file not found: {css_path}"
-            raise FileNotFoundError(exception_msg)
-
+        self.logo_path = logo_path
+        self.css_class = css_class
         self.css_text = css_path.read_text(encoding="utf-8")
         self.margin = "2cm"
 
@@ -61,8 +59,8 @@ class StyleManager:
                     {self.css_text}
                 </style>
             </head>
-            <body class="markdown-body">
-                <h1>{title}</h1>
+            <body class="{self.css_class}">
+                <h1>{title}<img class="brand-logo" src="{self.logo_path}" alt="Logo"></h1>
                 {labels_html}
                 {content}
             </body>
