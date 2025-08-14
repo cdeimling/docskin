@@ -11,9 +11,8 @@ if TYPE_CHECKING:
 import markdown
 from weasyprint import HTML
 
-from docskin.styles import StyleManager
-
-from .github_api import GitHubIssueFetcher
+from docskin.core.github_api import GitHubIssueFetcher
+from docskin.core.styles import StyleManager
 
 
 class MarkdownHTMLExtractor:

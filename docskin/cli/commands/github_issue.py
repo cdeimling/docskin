@@ -8,7 +8,7 @@ from pathlib import Path
 
 import click
 
-from docskin.converter import get_github_issue_converter
+from docskin.core.converter import get_github_issue_converter
 
 
 @click.command(name="github")

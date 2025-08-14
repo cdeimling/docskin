@@ -8,7 +8,7 @@ from pathlib import Path
 
 import click
 
-from docskin.converter import get_markdown_converter
+from docskin.core.converter import get_markdown_converter
 
 
 @click.command(name="md")

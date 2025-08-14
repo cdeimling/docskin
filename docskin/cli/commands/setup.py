@@ -6,7 +6,7 @@ Python dependencies by delegating to the run_setup helper.
 
 import click
 
-from docskin.setup import run_setup
+from docskin.core.setup import run_setup
 
 
 @click.command(name="setup")
