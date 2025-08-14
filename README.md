@@ -5,7 +5,6 @@
 [![Security Status](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 [![PyPI Version](https://img.shields.io/pypi/v/docskin?style=flat-square)](https://pypi.org/project/docskin/)
 <!-- Pytest Coverage Comment:Begin -->
-
 <!-- Pytest Coverage Comment:End -->
 
 Style your **doc**uments - convert Markdown files and GitHub issues into styled PDF documents in your corporate **skin** – with full support for CSS themes, logos, and directory processing.
@@ -123,6 +122,10 @@ WeasyPrint is licensed under the BSD 3-Clause License, and depends on system lib
 
 Some CSS files in `assets/` are adapted from  
 [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css),  
+which is licensed under the MIT License.
+
+The file `assets/github.svg.png` is adapted from
+[Primer Octicons](https://github.com/primer/octicons?tab=readme-ov-file),
 which is licensed under the MIT License.
 
 The full license texts for `docskin` and the bundled third-party components are included in the [LICENSE.txt](LICENSE.txt) file in this repository.
