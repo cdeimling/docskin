@@ -21,6 +21,8 @@
             "module": "docskin",
             "args": [
                 "-cs", "assets/corporate-sample-design.css",
+                "-cc", "markdown-body mode-slide",
+                "-l", "assets/github.svg.png",
                 "md",
                 "--input", "README.md",
                 "--output", "README.pdf"

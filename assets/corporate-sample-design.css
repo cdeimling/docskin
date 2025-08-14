@@ -47,7 +47,7 @@
   break-before:page; page-break-before:always;
   margin:0 0 var(--s-6) 0;
   display:flex; align-items:center; justify-content:space-between;
-  font-family:var(--font-major); font-size:var(--fs-title); line-height:1.15; font-weight:600;
+  font-family:var(--font-major); font-size:var(--fs-title); line-height:1.15; font-weight:600; page-break-inside: avoid; break-inside: avoid;
 }
 .markdown-body.mode-slide h1:first-of-type{ break-before:avoid; page-break-before:auto; }
 
@@ -56,7 +56,13 @@
 .markdown-body.mode-slide :is(p,ul,ol){ font-size:var(--fs-body); margin:0 0 var(--s-3) 0; }
 .markdown-body.mode-slide ul{ padding-left:1.2em; }
 
-.markdown-body.mode-slide h1 img.brand-logo{ height:32px; margin-left:1rem; flex-shrink:0; }
+.markdown-body.mode-slide h1 img.brand-logo {
+    height: 80px;
+    margin-left: 1rem;   /* or 0.5rem for less space */
+    margin-right: 0;     /* ensure no extra space on the right */
+    flex-shrink: 0;
+    display: block;
+}
 
 .markdown-body.mode-slide :is(ul,ol,table,pre,blockquote){ break-inside:avoid; page-break-inside:avoid; }
 
