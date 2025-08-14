@@ -33,8 +33,11 @@ def _prepare_stubs(tmp_path: Path) -> None:
 
     # Stub weasyprint.HTML object
     class PDFStub:
-        def __init__(self, string: str | None = None) -> None:
+        def __init__(
+                self, string: str | None = None, base_url: str | None = None
+            ) -> None:
             self.string = string
+            self.base_url = base_url
 
         def write_pdf(self, output) -> None:
             p = Path(output)
@@ -49,7 +52,7 @@ def _prepare_stubs(tmp_path: Path) -> None:
 
     # weasyprint stub exposing an HTML factory
     weasyprint_stub = types.SimpleNamespace(
-        HTML=lambda string=None: PDFStub(string)
+        HTML=lambda string=None, base_url=None: PDFStub(string, base_url)
     )
     # Insert stub modules into sys.modules
     sys.modules["markdown"] = markdown_stub
@@ -200,7 +203,7 @@ class TestDocskinCLI(unittest.TestCase):
                         str(output_file),
                     ],
                 )
-            self.assertEqual(result.exit_code, 0, msg=result.output)
-            self.assertTrue(output_file.exists(), "GitHub PDF not created")
-            self.assertEqual(result.exit_code, 0, msg=result.output)
-            self.assertTrue(output_file.exists(), "GitHub PDF not created")
+                self.assertEqual(result.exit_code, 0, msg=result.output)
+                self.assertTrue(output_file.exists(), "GitHub PDF not created")
+                self.assertEqual(result.exit_code, 0, msg=result.output)
+                self.assertTrue(output_file.exists(), "GitHub PDF not created")
