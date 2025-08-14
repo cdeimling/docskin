@@ -8,10 +8,10 @@ if TYPE_CHECKING:
     from collections.abc import Generator
     from pathlib import Path
 
-    from .styles import StyleManager
-
 import markdown
 from weasyprint import HTML
+
+from docskin.styles import StyleManager
 
 from .github_api import GitHubIssueFetcher
 
@@ -90,6 +90,7 @@ class GitHubIssuePdfRenderer:
     def render(
         self, repo: str, issue: int, api_base: str, output: Path
     ) -> None:
+        """Fetch a GitHub issue and render it as a styled PDF."""
         fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)
         issue_data = fetcher.fetch()
         title = issue_data["title"]
@@ -97,3 +98,19 @@ class GitHubIssuePdfRenderer:
         content = self.extractor.extract(issue_data["body"])
         html = self.style_manager.render_html(content, title, labels)
         HTML(string=html).write_pdf(output)
+
+
+def get_markdown_converter(
+    css_style: Path, css_class: str, logo: Path
+) -> MarkdownPdfRenderer:
+    """Get a Markdown to PDF converter."""
+    style_manager = StyleManager(css_style, css_class, logo)
+    return MarkdownPdfRenderer(style_manager)
+
+
+def get_github_issue_converter(
+    css_style: Path, css_class: str, logo: Path
+) -> GitHubIssuePdfRenderer:
+    """Get a GitHub issue to PDF converter."""
+    style_manager = StyleManager(css_style, css_class, logo)
+    return GitHubIssuePdfRenderer(style_manager)
