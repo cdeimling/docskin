@@ -68,7 +68,7 @@ jobs:
 
     - uses: astral-sh/ruff-action@v3
       with:
-        args: check docskin --output-format=github . --exit-zero .
+        args: check docskin --output-format=github .
 
     - uses: astral-sh/ruff-action@v3
       with:

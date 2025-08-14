@@ -3,6 +3,7 @@
 [![Build Status](https://github.com/cdeimling/docskin/actions/workflows/ci.yml/badge.svg)](https://github.com/cdeimling/docskin/actions)
 [![image](https://img.shields.io/pypi/v/ruff.svg)](https://pypi.python.org/pypi/ruff)
 [![Security Status](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![PyPI Version](https://img.shields.io/pypi/v/docskin?style=flat-square)](https://pypi.org/project/docskin/)
 <!-- Pytest Coverage Comment:Begin -->
 <!-- Pytest Coverage Comment:End -->
