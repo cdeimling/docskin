@@ -46,3 +46,11 @@ class GitHubIssueFetcher:
         response = self.session.get(url)
         response.raise_for_status()
         return response.json()
+
+
+def get_github_issue(
+    repo: str, issue_number: int, api_base: str = "https://api.github.com"
+) -> dict:
+    """Fetch a GitHub issue by repository and issue number."""
+    fetcher = GitHubIssueFetcher(repo, issue_number, api_base=api_base)
+    return fetcher.fetch()

@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 import markdown
 from weasyprint import HTML
 
-from docskin.core.github_api import GitHubIssueFetcher
+from docskin.core.github_api import get_github_issue
 from docskin.core.styles import StyleManager
 
 
@@ -90,8 +90,7 @@ class GitHubIssuePdfRenderer:
         self, repo: str, issue: int, api_base: str, output: Path
     ) -> None:
         """Fetch a GitHub issue and render it as a styled PDF."""
-        fetcher = GitHubIssueFetcher(repo, issue, api_base=api_base)
-        issue_data = fetcher.fetch()
+        issue_data = get_github_issue(repo, issue, api_base=api_base)
         title = issue_data["title"]
         labels = [label["name"] for label in issue_data.get("labels", [])]
         content = self.extractor.extract(issue_data["body"])
