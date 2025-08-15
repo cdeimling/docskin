@@ -36,6 +36,11 @@
 .docskin, .markdown-body{ color:var(--c-dk1); background:var(--c-lt1); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
 
 /* ======================== SLIDES: 16:9 screens ======================== */
+/* Page break before every h1 except the first */
+.markdown-body.mode-slide h1:not(:first-of-type) {
+  break-before: page;
+  page-break-before: always;
+}
 .markdown-body.mode-slide{ font-family:var(--font-minor); line-height:var(--lh); max-width:var(--slide-w); margin:0 auto; }
 
 @media print{
@@ -43,18 +48,35 @@
   @page slide-169{ size: 1920px 1080px; margin: 0; }
 }
 
-.markdown-body.mode-slide h1{
-  break-before:page; page-break-before:always;
-  margin:0 0 var(--s-6) 0;
-  display:flex; align-items:center; justify-content:space-between;
-  font-family:var(--font-major); font-size:var(--fs-title); line-height:1.15; font-weight:600; page-break-inside: avoid; break-inside: avoid;
+.markdown-body.mode-slide h1 {
+  margin: 0;
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between;
+  page-break-inside: avoid;
+  font-family:var(--font-major); 
+  font-size:var(--fs-title); 
+  line-height:1.15; 
+  font-weight:600; 
+  break-inside: avoid;
 }
-.markdown-body.mode-slide h1:first-of-type{ break-before:avoid; page-break-before:auto; }
 
-.markdown-body.mode-slide hr{ break-before:page; page-break-before:always; border:0; height:0; visibility:hidden; margin:0; }
+.markdown-body.mode-slide hr{ 
+  break-before:page; 
+  page-break-before:always; 
+  border:0; 
+  height:0; 
+  visibility:hidden; 
+  margin:0; 
+}
 
-.markdown-body.mode-slide :is(p,ul,ol){ font-size:var(--fs-body); margin:0 0 var(--s-3) 0; }
-.markdown-body.mode-slide ul{ padding-left:1.2em; }
+.markdown-body.mode-slide :is(p,ul,ol){ 
+  font-size:var(--fs-body); 
+  margin:0 0 var(--s-3) 0; 
+}
+.markdown-body.mode-slide ul{ 
+  padding-left:1.2em; 
+}
 
 .markdown-body.mode-slide h1 img.brand-logo {
     height: 80px;
@@ -64,7 +86,10 @@
     display: block;
 }
 
-.markdown-body.mode-slide :is(ul,ol,table,pre,blockquote){ break-inside:avoid; page-break-inside:avoid; }
+.markdown-body.mode-slide :is(ul,ol,table,pre,blockquote){ 
+  break-inside:avoid; 
+  page-break-inside:avoid; 
+}
 
 @media screen{
   .markdown-body.mode-slide{ padding: 0; }
@@ -76,6 +101,31 @@
     padding: var(--s-12) var(--s-16);
     box-shadow: 0 2px 16px rgba(0,0,0,.08);
   }
+}
+
+/* Slide header: title and logo together, logo top right */
+.markdown-body.mode-slide .slide-header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0 0 var(--s-6) 0;
+  font-family: var(--font-major);
+  font-size: var(--fs-title);
+  line-height: 1.15;
+  font-weight: 600;
+  page-break-inside: avoid;
+}
+
+.markdown-body.mode-slide .slide-header .brand-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 80px;
+  margin: 0;
+  flex-shrink: 0;
+  display: block;
+  z-index: 10;
 }
 
 /* Slides: 16:9 PDF page with safe margins so header/footer aren't at the edge */

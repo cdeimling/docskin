@@ -42,8 +42,7 @@ class MarkdownPdfRenderer:
     def render_file(self, input_md_path: Path, output_pdf_path: Path) -> None:
         """Convert a single Markdown file to a PDF."""
         content = input_md_path.read_text(encoding="utf-8")
-        title = input_md_path.stem
-        html_content = self.markdown_to_html(content, title)
+        html_content = self.markdown_to_html(content)
         if output_pdf_path.is_file():
             output_pdf_path.unlink()
         HTML(string=html_content, base_url=".").write_pdf(output_pdf_path)
