@@ -1,6 +1,6 @@
 [project]
 name = "docskin"
-version = "0.2.4"
+version = "0.3.0"
 description = "Style your documents - convert Markdown files and GitHub issues into styled PDF documents in your corporate skin."
 authors = [
     { name = "Constantin v. Deimling", email = "c.deimling@web.de" }
