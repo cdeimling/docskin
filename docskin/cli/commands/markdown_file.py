@@ -35,7 +35,10 @@ def md(
     """Convert a local Markdown file to PDF with optional theming."""
     click.echo(f"📄 Rendering {input_md} to PDF...")
     converter = get_markdown_converter(
-        ctx.obj["css_style"], ctx.obj["css_class"], ctx.obj["logo"]
+        ctx.obj["css_style"],
+        ctx.obj["css_class"],
+        ctx.obj["logo"],
+        ctx.obj["footer_text"],
     )
     converter.render_file(input_md, output_pdf)
     click.echo(f"✅ Saved as {output_pdf}")

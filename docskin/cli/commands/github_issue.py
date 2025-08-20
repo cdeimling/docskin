@@ -31,7 +31,10 @@ def github(
     """Convert a GitHub issue to PDF with optional theming."""
     click.echo(f"🐙 Fetching issue #{issue} from {repo}")
     converter = get_github_issue_converter(
-        ctx.obj["css_style"], ctx.obj["css_class"], ctx.obj["logo"]
+        ctx.obj["css_style"],
+        ctx.obj["css_class"],
+        ctx.obj["logo"],
+        ctx.obj["footer_text"],
     )
     converter.render(repo, issue, api_base, output)
     click.echo(f"✅ Saved as {output}")
