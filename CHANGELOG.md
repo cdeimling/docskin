@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0](https://github.com/cdeimling/docskin/compare/v0.2.4...v0.3.0) (2025-08-20)
+
+
+### Features
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) added foot-text for disclaimers ([277ecde](https://github.com/cdeimling/docskin/commit/277ecde96de10949cfaa6cbac3d88ea66645f5a6))
+* [#1](https://github.com/cdeimling/docskin/issues/1) added foot-text for disclaimers ([f814db7](https://github.com/cdeimling/docskin/commit/f814db7349b61ffeb66a129b45b7e9918abcb921))
+* [#1](https://github.com/cdeimling/docskin/issues/1) getter for github class added. ([3c7dac4](https://github.com/cdeimling/docskin/commit/3c7dac476544fa363292bd48dc36e02df2741e00))
+* [#1](https://github.com/cdeimling/docskin/issues/1) logo on every slide. ([4360f7c](https://github.com/cdeimling/docskin/commit/4360f7c4198ac1b7a11458f562b188e5508b0afc))
+* [#1](https://github.com/cdeimling/docskin/issues/1) logo on every slide. ([1692e06](https://github.com/cdeimling/docskin/commit/1692e0648d7ac7df14da02537eed0840c7e85a8e))
+* [#1](https://github.com/cdeimling/docskin/issues/1) logo setup included ([d4e3066](https://github.com/cdeimling/docskin/commit/d4e3066e50519fb6f1126e4c81e7ecaf5c16ae32))
+* [#1](https://github.com/cdeimling/docskin/issues/1) re-factored cli module to cli package ([c082d77](https://github.com/cdeimling/docskin/commit/c082d773c37fa3a40520dc53e5f04bd106592197))
+* [#1](https://github.com/cdeimling/docskin/issues/1) sample design added. ([25f2237](https://github.com/cdeimling/docskin/commit/25f2237febfffb718d874cb51d3dcb0eff1b6ec6))
+
+
+### Bug Fixes
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) all ruff findings fixed in docskin. ([d69f9f6](https://github.com/cdeimling/docskin/commit/d69f9f6522ebbaf7948f9af55393d3c79c4797d0))
+* [#1](https://github.com/cdeimling/docskin/issues/1) corrected hatchling config ([e13a532](https://github.com/cdeimling/docskin/commit/e13a532ae5b9c2cebfe4e7041ed98527f4861430))
+* [#1](https://github.com/cdeimling/docskin/issues/1) corrected hatchling config ([1925c1a](https://github.com/cdeimling/docskin/commit/1925c1af8628b40929deb701da028b535e4c0975))
+* [#1](https://github.com/cdeimling/docskin/issues/1) fixed linting findings. ([c950185](https://github.com/cdeimling/docskin/commit/c950185e48ae7f26e1d7ba73a28ba8d4c36f64e6))
+* [#1](https://github.com/cdeimling/docskin/issues/1) license updated within readme.md ([dbd7621](https://github.com/cdeimling/docskin/commit/dbd762148d5a942b4a194a3d66df81b2810c8e47))
+* [#1](https://github.com/cdeimling/docskin/issues/1) unit test bugfix. ([a423547](https://github.com/cdeimling/docskin/commit/a423547eab2a17912f60979cd5dd3465b1c98046))
+
+
+### Documentation
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([25a9cc0](https://github.com/cdeimling/docskin/commit/25a9cc0d5c3fc2d5978d51ad4102d8001d9bebb8))
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([902ddf9](https://github.com/cdeimling/docskin/commit/902ddf99d7930e8f136131534b9f36ce5404628a))
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([0c92010](https://github.com/cdeimling/docskin/commit/0c9201069e422b18970669bce2fd7e400b0480af))
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([b247091](https://github.com/cdeimling/docskin/commit/b24709154803c17c9ee0372c6756e312642a9a5b))
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([2a84951](https://github.com/cdeimling/docskin/commit/2a8495104a07165e0e54db7cee265f20262d8e48))
+
 ## [0.2.4](https://github.com/cdeimling/docskin/compare/v0.2.3...v0.2.4) (2025-08-12)
 
 
