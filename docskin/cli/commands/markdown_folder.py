@@ -37,7 +37,10 @@ def md_dir(
     """Convert all Markdown files in a directory to PDF."""
     click.echo(f"📁 Scanning {input_md_folder} for Markdown files...")
     converter = get_markdown_converter(
-        ctx.obj["css_style"], ctx.obj["css_class"], ctx.obj["logo"]
+        ctx.obj["css_style"],
+        ctx.obj["css_class"],
+        ctx.obj["logo"],
+        ctx.obj["footer_text"],
     )
     results = list(converter.render_folder(input_md_folder, output_md_folder))
     click.echo(f"✅ All Markdown files converted to PDF in {output_md_folder}")

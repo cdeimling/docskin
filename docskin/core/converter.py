@@ -61,10 +61,7 @@ class MarkdownPdfRenderer:
             yield md_file.name, output_path.name
 
     def markdown_to_html(
-        self,
-        content: str,
-        title: str | None = None,
-        labels: list[str] | None = None,
+        self, content: str, title: str = "", labels: list[str] | None = None
     ) -> str:
         """Convert Markdown text to HTML and apply styles.
 
@@ -94,20 +91,22 @@ class GitHubIssuePdfRenderer:
         labels = [label["name"] for label in issue_data.get("labels", [])]
         content = self.extractor.extract(issue_data["body"])
         html_content = self.style_manager.render_html(content, title, labels)
+        output_html = output.with_suffix(".html")
+        output_html.write_text(html_content)
         HTML(string=html_content, base_url=".").write_pdf(output)
 
 
 def get_markdown_converter(
-    css_style: Path, css_class: str, logo: Path
+    css_style: Path, css_class: str, logo: Path, footer_text: str
 ) -> MarkdownPdfRenderer:
     """Get a Markdown to PDF converter."""
-    style_manager = StyleManager(css_style, css_class, logo)
+    style_manager = StyleManager(css_style, css_class, logo, footer_text)
     return MarkdownPdfRenderer(style_manager)
 
 
 def get_github_issue_converter(
-    css_style: Path, css_class: str, logo: Path
+    css_style: Path, css_class: str, logo: Path, footer_text: str
 ) -> GitHubIssuePdfRenderer:
     """Get a GitHub issue to PDF converter."""
-    style_manager = StyleManager(css_style, css_class, logo)
+    style_manager = StyleManager(css_style, css_class, logo, footer_text)
     return GitHubIssuePdfRenderer(style_manager)

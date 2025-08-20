@@ -28,13 +28,20 @@ from .commands import github, md, md_dir, setup_command
     default="markdown-body",
     help="CSS class to render (e.g. markdown-body slide for slides)",
 )
+@click.option(
+    "--footer-text", "-ft",
+    type=str,
+    default="",
+    help="Optional footer text to be added to the document",
+)
 @click.pass_context
 def cli(
     ctx: click.Context,
     verbose: int,
     logo: Path,
     css_style: Path,
-    css_class: str
+    css_class: str,
+    footer_text: str,
 ) -> None:
     """
     📄Style your documents into styled PDF documents in your corporate skin.
@@ -44,6 +51,7 @@ def cli(
     ctx.obj["logo"] = logo
     ctx.obj["css_style"] = css_style
     ctx.obj["css_class"] = css_class
+    ctx.obj["footer_text"] = footer_text
 
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help(), color=True)
