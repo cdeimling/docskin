@@ -58,7 +58,21 @@ jobs:
 
     - name: Update README
       run: |
-        sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n${{ steps.coverage.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+        python3 - <<'PY'
+        import pathlib, re, os
+        readme = pathlib.Path("README.md")
+        coverage_html = os.environ.get("COVERAGE_HTML", "")
+        text = readme.read_text(encoding="utf-8")
+        text = re.sub(
+            r"<!-- Pytest Coverage Comment:Begin -->.*?<!-- Pytest Coverage Comment:End -->",
+            f"<!-- Pytest Coverage Comment:Begin -->\n{coverage_html}\n<!-- Pytest Coverage Comment:End -->",
+            text,
+            flags=re.DOTALL,
+        )
+        readme.write_text(text, encoding="utf-8")
+        PY
+      env:
+        COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
 
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v5
