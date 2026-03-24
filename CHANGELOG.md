@@ -109,6 +109,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Features
+
+- Mermaid diagram support: fenced `mermaid` code blocks in Markdown are
+  automatically rendered to inline SVG via the [mermaid.ink](https://mermaid.ink)
+  API.  When the rendering service is unavailable the diagram source is
+  preserved as a plain `<pre>` fallback so documents always render completely.
+
 - Refactored architecture: clear separation between MarkdownHTMLExtractor, StyleManager, PDFExporter, MarkdownPdfRenderer, and GitHubIssuePdfRenderer.
 - CLI now supports four main commands: `setup`, `md`, `md-dir`, and `github`.
 - Improved file structure and documentation.

@@ -13,7 +13,10 @@ from docskin.core.converter import get_github_issue_converter
 
 @click.command(name="github")
 @click.option(
-    "--output", required=True, type=click.Path(), help="Output PDF file path"
+    "--output",
+    required=True,
+    type=click.Path(path_type=Path),
+    help="Output PDF file path",
 )
 @click.option("--repo", required=True, help="GitHub repo in owner/name format")
 @click.option("--issue", required=True, type=int, help="Issue number")
