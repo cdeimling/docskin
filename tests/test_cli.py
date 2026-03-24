@@ -207,3 +207,106 @@ class TestDocskinCLI(unittest.TestCase):
                 self.assertTrue(output_file.exists(), "GitHub PDF not created")
                 self.assertEqual(result.exit_code, 0, msg=result.output)
                 self.assertTrue(output_file.exists(), "GitHub PDF not created")
+
+
+class TestMermaidProcessor(unittest.TestCase):
+    """Unit tests for the Mermaid pre-processing module."""
+
+    def setUp(self) -> None:
+        import docskin.core.mermaid as _m  # noqa: PLC0415
+
+        self.mermaid = _m
+
+    def test_render_mermaid_to_svg_success(self) -> None:
+        """render_mermaid_to_svg returns SVG text on a successful HTTP call."""
+        from unittest.mock import MagicMock, patch
+
+        fake_svg = "<svg><text>diagram</text></svg>"
+        mock_resp = MagicMock()
+        mock_resp.text = fake_svg
+        mock_resp.raise_for_status = MagicMock()
+
+        with patch(
+            "docskin.core.mermaid.requests.get", return_value=mock_resp
+        ):
+            result = self.mermaid.render_mermaid_to_svg("graph TD; A-->B")
+
+        self.assertEqual(result, fake_svg)
+        self.assertIn("<svg>", result)
+
+    def test_render_mermaid_to_svg_fallback_on_error(self) -> None:
+        """render_mermaid_to_svg returns a <pre> fallback when the API fails."""
+        from unittest.mock import patch
+
+        import requests as req
+
+        with patch(
+            "docskin.core.mermaid.requests.get",
+            side_effect=req.RequestException("timeout"),
+        ):
+            result = self.mermaid.render_mermaid_to_svg("graph TD; A-->B")
+
+        self.assertIn("mermaid-fallback", result)
+        self.assertIn("graph TD", result)
+
+    def test_preprocess_mermaid_replaces_block(self) -> None:
+        """preprocess_mermaid substitutes mermaid fences with SVG divs."""
+        from unittest.mock import patch
+
+        md_text = "# Title\n\n```mermaid\ngraph TD; A-->B\n```\n\nText."
+
+        with patch(
+            "docskin.core.mermaid.render_mermaid_to_svg",
+            return_value="<svg>test</svg>",
+        ):
+            result = self.mermaid.preprocess_mermaid(md_text)
+
+        self.assertIn("mermaid-diagram", result)
+        self.assertIn("<svg>test</svg>", result)
+        self.assertNotIn("```mermaid", result)
+
+    def test_preprocess_mermaid_no_block(self) -> None:
+        """preprocess_mermaid is a no-op when no mermaid block is present."""
+        md_text = "# Title\n\nJust plain text."
+        result = self.mermaid.preprocess_mermaid(md_text)
+        self.assertEqual(result, md_text)
+
+    def test_preprocess_mermaid_multiple_blocks(self) -> None:
+        """preprocess_mermaid handles multiple mermaid blocks in one document."""
+        from unittest.mock import patch
+
+        md_text = (
+            "```mermaid\ngraph TD; A-->B\n```\n\n"
+            "Some text.\n\n"
+            "```mermaid\nsequenceDiagram; A->>B: Hello\n```"
+        )
+
+        with patch(
+            "docskin.core.mermaid.render_mermaid_to_svg",
+            side_effect=["<svg>first</svg>", "<svg>second</svg>"],
+        ):
+            result = self.mermaid.preprocess_mermaid(md_text)
+
+        self.assertIn("<svg>first</svg>", result)
+        self.assertIn("<svg>second</svg>", result)
+        self.assertEqual(result.count("mermaid-diagram"), 2)
+        self.assertNotIn("```mermaid", result)
+
+    def test_extractor_calls_preprocess_mermaid(self) -> None:
+        """MarkdownHTMLExtractor.extract runs Mermaid pre-processing."""
+        from unittest.mock import patch
+
+        import docskin.core.converter as conv_mod  # noqa: PLC0415
+
+        md_text = "```mermaid\ngraph TD; A-->B\n```"
+        fake_svg = "<svg>mocked</svg>"
+
+        with patch(
+            "docskin.core.mermaid.render_mermaid_to_svg",
+            return_value=fake_svg,
+        ):
+            extractor = conv_mod.MarkdownHTMLExtractor()
+            html = extractor.extract(md_text)
+
+        self.assertIn(fake_svg, html)
+        self.assertNotIn("```mermaid", html)

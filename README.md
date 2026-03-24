@@ -166,6 +166,31 @@ The architecture of `docskin` is designed to be modular and extensible. The main
 - **GitHubIssueFetcher**: Fetches GitHub issues for conversion.
 
 
+## 🧜 Mermaid Diagram Support
+
+docskin automatically renders [Mermaid](https://mermaid.js.org/) diagrams
+embedded in Markdown files.  Write standard fenced code blocks tagged
+`mermaid` and the diagrams will appear as crisp SVG graphics in the output
+PDF:
+
+````markdown
+```mermaid
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Do it]
+    B -->|No| D[Skip it]
+```
+````
+
+Supported diagram types include flowcharts, sequence diagrams, class diagrams,
+Gantt charts, and all other types supported by the
+[mermaid.ink](https://mermaid.ink) rendering service.
+
+> **Note:** Diagram rendering requires an internet connection to reach
+> `https://mermaid.ink`.  When the service is unreachable the diagram source
+> is preserved as a plain-text `<pre>` block so the rest of the document still
+> renders correctly.
+
 ## 🛠️ TODO / Ideas
 
 - PDF metadata (author, title, etc.)

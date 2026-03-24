@@ -12,6 +12,7 @@ import markdown
 from weasyprint import HTML
 
 from docskin.core.github_api import get_github_issue
+from docskin.core.mermaid import preprocess_mermaid
 from docskin.core.styles import StyleManager
 
 
@@ -23,9 +24,15 @@ class MarkdownHTMLExtractor:
         self.extensions = extensions or ["fenced_code", "tables", "codehilite"]
 
     def extract(self, md_text: str) -> str:
-        """Convert Markdown text to HTML."""
+        """Convert Markdown text to HTML.
+
+        Mermaid fenced code blocks (``` ```mermaid … ``` ```) are rendered to
+        inline SVG via the mermaid.ink API before the remaining Markdown is
+        processed by the standard library.
+        """
+        processed = preprocess_mermaid(md_text)
         return markdown.markdown(
-            md_text,
+            processed,
             extensions=self.extensions,
             output_format="xhtml",
         )
