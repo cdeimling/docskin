@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1](https://github.com/cdeimling/docskin/compare/v0.3.0...v0.3.1) (2026-03-24)
+
+
+### Documentation
+
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([c975b53](https://github.com/cdeimling/docskin/commit/c975b53366beb5402ba2febcd0d1999d276ab8a6))
+* [#1](https://github.com/cdeimling/docskin/issues/1) update coverage badge ([211b617](https://github.com/cdeimling/docskin/commit/211b6177b27b1d672e5510bbaec5bca66e1c6b3b))
+
 ## [0.3.0](https://github.com/cdeimling/docskin/compare/v0.2.4...v0.3.0) (2025-08-20)
 
 
